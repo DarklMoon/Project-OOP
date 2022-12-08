@@ -37,6 +37,7 @@ public class View {
         firstFrame.add(firstPanel, BorderLayout.CENTER);
         
         firstFrame.setSize(500,300);
+        firstFrame.setLocationRelativeTo(null);
         firstFrame.setResizable(false);
         firstFrame.setVisible(true);
         firstFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
