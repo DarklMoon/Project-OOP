@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.SystemColor;
 import javax.swing.*;
 import org.jfree.chart.*;
@@ -45,16 +46,15 @@ public class MainPage {
         menuPanel.add(settingBtn);
         
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        dataset.setValue(80, "Marks", "People1");
-        dataset.setValue(50, "Marks", "People2");
-        dataset.setValue(75, "Marks", "People3");
-        dataset.setValue(95, "Marks", "People4");
-        dataset.setValue(10, "Marks", "People5");
-        dataset.setValue(45, "Marks", "People6");
-        dataset.setValue(35, "Marks", "People7");
-        dataset.setValue(70, "Marks", "People8");
-        dataset.setValue(105, "Marks", "People9");
-        JFreeChart chart = ChartFactory.createBarChart3D("People Chart", "People Name", "Marks", dataset, PlotOrientation.VERTICAL, false, true, false);
+        dataset.setValue(80, "Marks", "พื้นที่เปลี่ยว");
+        dataset.setValue(50, "Marks", "พื้นที่ชำรุด");
+        dataset.setValue(75, "Marks", "พื้นที่ผิดกฎหมาย");
+        dataset.setValue(95, "Marks", "อบายมุข");
+        dataset.setValue(10, "Marks", "ผู้กระทำผิดทางจราจร");
+        dataset.setValue(45, "Marks", "สินค้าไม่ได้มาตรฐาน");
+        dataset.setValue(35, "Marks", "ทุจริต/คอรัปชั่น");
+        dataset.setValue(70, "Marks", "อื้นๆ");
+        JFreeChart chart = ChartFactory.createBarChart3D("กราฟแสดงจำนวนการร้องเรียน", "ประเภทของการร้องเรียน", "จำนวนครั้ง", dataset, PlotOrientation.VERTICAL, false, true, false);
         chart.setBackgroundPaint(Color.WHITE);
         chart.getTitle().setPaint(Color.BLACK); 
         CategoryPlot p = chart.getCategoryPlot();
@@ -69,6 +69,11 @@ public class MainPage {
         BarRenderer r = (BarRenderer)chart.getCategoryPlot().getRenderer();
         r.setSeriesPaint(0, VERY_LIGHT_RED);
         
+        CategoryPlot plot = (CategoryPlot) chart.getPlot();
+        plot= chart.getCategoryPlot();
+        plot.setNoDataMessage("NO DATA");
+        plot.setNoDataMessageFont(new Font("Arial", Font.BOLD, 30));
+        plot.setNoDataMessagePaint(Color.RED);
         ChartPanel cp = new ChartPanel(chart);
         chartPanel = new JPanel();
         chartPanel.setLayout(new java.awt.BorderLayout());
@@ -79,7 +84,7 @@ public class MainPage {
         frame.add(chartPanel, BorderLayout.CENTER);
         
         frame.setVisible(false);
-        frame.setSize(800,600);
+        frame.setSize(1024,640);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
