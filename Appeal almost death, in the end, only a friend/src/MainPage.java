@@ -56,7 +56,7 @@ public class MainPage {
         dataset.setValue(105, "Marks", "People9");
         JFreeChart chart = ChartFactory.createBarChart3D("People Chart", "People Name", "Marks", dataset, PlotOrientation.VERTICAL, false, true, false);
         chart.setBackgroundPaint(Color.WHITE);
-        chart.getTitle().setPaint(Color.RED); 
+        chart.getTitle().setPaint(Color.BLACK); 
         CategoryPlot p = chart.getCategoryPlot();
         p.setRangeGridlinePaint(Color.WHITE);
         
