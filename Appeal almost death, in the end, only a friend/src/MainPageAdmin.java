@@ -11,13 +11,13 @@ import org.jfree.chart.renderer.category.*;
 
 import org.jfree.data.category.DefaultCategoryDataset;
 
-public class MainPage {
+public class MainPageAdmin {
     private JFrame frame;
     private JPanel menuPanel, chartPanel;
     private JButton iconBtn, reportBtn, accountBtn, settingBtn;
-    public static final Color VERY_LIGHT_RED = new Color(51,204,255);
+    public static final Color VERY_LIGHT_RED = new Color(164,91,170);
     
-    public MainPage(){
+    public MainPageAdmin(){
         frame = new JFrame("Call Sing");
         frame.setLayout(new BorderLayout());
         
@@ -30,7 +30,7 @@ public class MainPage {
         iconBtn.setOpaque(true);
         menuPanel.add(iconBtn);
         
-        reportBtn = new JButton("Report");
+        reportBtn = new JButton("Reported");
         reportBtn.setBackground(new Color(255,97,97));
         reportBtn.setOpaque(true);
         menuPanel.add(reportBtn);
@@ -83,11 +83,15 @@ public class MainPage {
         frame.add(menuPanel, BorderLayout.NORTH);
         frame.add(chartPanel, BorderLayout.CENTER);
         
-        frame.setVisible(false);
+        frame.setVisible(false); //set true for display
         frame.setSize(1024,640);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+    
+//    public static void main(String[] args) {
+//        new MainPageAdmin();
+//    }
     
     public JFrame getFrame(){return this.frame;}    
     
