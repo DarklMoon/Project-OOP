@@ -1,9 +1,11 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
 
-public class Controller implements ActionListener{
+public class Controller implements ActionListener, WindowListener{
     private RegisterPage regPage;
     private LoginPage loginPage;
     private MainPage mainPage;
@@ -22,6 +24,7 @@ public class Controller implements ActionListener{
         regPage.getLoginBtn().addActionListener(this);
         loginPage.getRegBtn().addActionListener(this);
         loginPage.getLoginBtn().addActionListener(this);
+        mainPage.getFrame().addWindowListener(this);
     }
 
     @Override
@@ -41,30 +44,50 @@ public class Controller implements ActionListener{
             regPage.getFrame().setVisible(false);
         }
         if(e.getSource().equals(regPage.getRegBtn())){
-            if(regPage.getNameTextField().getText().equals("")){
-                JOptionPane.showMessageDialog(regPage.getFrame(),"Please enter your username.","Missing Username",JOptionPane.WARNING_MESSAGE);
+            if(regPage.getFirstnameTextField().getText().equals("")){
+                JOptionPane.showMessageDialog(regPage.getFrame(),"Please enter your firstname.","Missing Firstname",JOptionPane.WARNING_MESSAGE);
             }
             else{
-                String username = regPage.getNameTextField().getText();
-                if(regPage.getEmailTextField().getText().equals("")){
-                    JOptionPane.showMessageDialog(regPage.getFrame(),"Please enter your email.","Missing Email",JOptionPane.WARNING_MESSAGE);
+                String firstname = regPage.getFirstnameTextField().getText();
+                if(regPage.getLastnameTextField().getText().equals("")){
+                    JOptionPane.showMessageDialog(regPage.getFrame(),"Please enter your lastname.","Missing Lastname",JOptionPane.WARNING_MESSAGE);
                 }
                 else{
-                    String email = regPage.getEmailTextField().getText();
-                    if(Arrays.equals(regPage.getPasswordField().getPassword(), regPage.getConfirmPassField().getPassword()) && (regPage.getPasswordField().getPassword()).length!=0){
-                        String password = Arrays.toString(regPage.getPasswordField().getPassword());
-                        regPage.getFrame().setVisible(false);
-                        mainPage.getFrame().setVisible(true);
-                        model.setAccount(new Account(username,password,email));
-                    }
-                    else if(regPage.getPasswordField().getPassword().length==0){
-                        JOptionPane.showMessageDialog(regPage.getFrame(),"Please enter your password.","Missing Password",JOptionPane.WARNING_MESSAGE);
+                    String lastname = regPage.getLastnameTextField().getText();
+                    if(regPage.getUsernameTextField().getText().equals("")){
+                        JOptionPane.showMessageDialog(regPage.getFrame(),"Please enter your username.","Missing Username",JOptionPane.WARNING_MESSAGE);
                     }
                     else{
-                        JOptionPane.showMessageDialog(regPage.getFrame(),"Password not match, please check your password.","Password not match",JOptionPane.WARNING_MESSAGE);
+                        String username = regPage.getUsernameTextField().getText();
+                        if(regPage.getEmailTextField().getText().equals("")){
+                            JOptionPane.showMessageDialog(regPage.getFrame(),"Please enter your email.","Missing Email",JOptionPane.WARNING_MESSAGE);
+                        }
+                        else{
+                            String email = regPage.getEmailTextField().getText();
+                            if(Arrays.equals(regPage.getPasswordField().getPassword(), regPage.getConfirmPassField().getPassword()) && (regPage.getPasswordField().getPassword()).length!=0){
+                                String password = Arrays.toString(regPage.getPasswordField().getPassword());
+                                regPage.getFrame().setVisible(false);
+                                mainPage.getFrame().setVisible(true);
+                                model.setAccount(new Account(firstname,lastname,username,password,email));
+                            }
+                            else if(regPage.getPasswordField().getPassword().length==0){
+                                JOptionPane.showMessageDialog(regPage.getFrame(),"Please enter your password.","Missing Password",JOptionPane.WARNING_MESSAGE);
+                            }
+                            else{
+                                JOptionPane.showMessageDialog(regPage.getFrame(),"Password not match, please check your password.","Password not match",JOptionPane.WARNING_MESSAGE);
+                            }
+                        }
                     }
                 }
             }
         }
     }
+
+    @Override public void windowOpened(WindowEvent e) {model.openDataBase();}
+    @Override public void windowClosing(WindowEvent e) {model.closeDataBase();}
+    @Override public void windowClosed(WindowEvent e) {}
+    @Override public void windowIconified(WindowEvent e) {}
+    @Override public void windowDeiconified(WindowEvent e) {}
+    @Override public void windowActivated(WindowEvent e) {}
+    @Override public void windowDeactivated(WindowEvent e) {}
 }
