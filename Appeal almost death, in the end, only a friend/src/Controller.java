@@ -25,15 +25,38 @@ public class Controller implements ActionListener, WindowListener{
         loginPage.getRegBtn().addActionListener(this);
         loginPage.getLoginBtn().addActionListener(this);
         loginPage.getFrame().addWindowListener(this);
+        mainPage.getFrame().addWindowListener(this);
+        regPage.getFrame().addWindowListener(this);
+        loginPage.getFrame().setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource().equals(loginPage.getLoginBtn())){
-            System.out.println("Login Test");
-            loginPage.getFrame().setVisible(false);
-            mainPage.getFrame().setVisible(true);
-            
+            if(loginPage.getUsernameTextField().getText().equals("")){
+                JOptionPane.showMessageDialog(loginPage.getFrame(),"Please enter your username.","Missing Username",JOptionPane.WARNING_MESSAGE);
+            }
+            else{
+                String username = loginPage.getUsernameTextField().getText();
+                if(loginPage.getPasswordField().getPassword().length==0){
+                    JOptionPane.showMessageDialog(loginPage.getFrame(),"Please enter your password.","Missing Password",JOptionPane.WARNING_MESSAGE);
+                }
+                else{
+                    String password = String.valueOf(loginPage.getPasswordField().getPassword());
+                    if(model.checkUserName(username)==true){   
+                        if(model.checkPassword(username, password)==true){
+                            loginPage.getFrame().setVisible(false);
+                            mainPage.getFrame().setVisible(true);
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(loginPage.getFrame(),"Password not match. Please try again.","Incorrect Password",JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(loginPage.getFrame(),"Username not found. Please check your username.","Username not found",JOptionPane.ERROR_MESSAGE); 
+                    }
+                }
+            }
         }
         if(e.getSource().equals(loginPage.getRegBtn())){
             loginPage.getFrame().setVisible(false);
@@ -66,10 +89,15 @@ public class Controller implements ActionListener, WindowListener{
                             String email = regPage.getEmailTextField().getText();
                             if(Arrays.equals(regPage.getPasswordField().getPassword(), regPage.getConfirmPassField().getPassword()) && (regPage.getPasswordField().getPassword()).length!=0){
                                 String password = String.valueOf(regPage.getPasswordField().getPassword());
-                                regPage.getFrame().setVisible(false);
-                                mainPage.getFrame().setVisible(true);
-                                model.setAccount(new Account(firstname,lastname,username,password,email));
-                                model.creatAccount();
+                                if(model.checkUserName(username)==true){
+                                    JOptionPane.showMessageDialog(regPage.getFrame(),"This username is already used. Please change your username.","Username is already used",JOptionPane.ERROR_MESSAGE);
+                                }
+                                else{
+                                    model.setAccount(new Account(firstname,lastname,username,password,email));
+                                    model.creatAccount();
+                                    regPage.getFrame().setVisible(false);
+                                    mainPage.getFrame().setVisible(true);  
+                                }
                             }
                             else if(regPage.getPasswordField().getPassword().length==0){
                                 JOptionPane.showMessageDialog(regPage.getFrame(),"Please enter your password.","Missing Password",JOptionPane.WARNING_MESSAGE);

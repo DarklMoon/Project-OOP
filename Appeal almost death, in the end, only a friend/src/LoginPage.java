@@ -7,10 +7,10 @@ import javax.swing.border.EmptyBorder;
 
 public class LoginPage {
     private JFrame frame;
-    private JLabel nameLabel, passLabel, loginLabel;
-    private JTextField nameTextField, emailTextField;
+    private JLabel usernameLabel, passLabel, loginLabel;
+    private JTextField usernameTextField, emailTextField;
     private JPasswordField passField, confirmPassField;
-    private JPanel panel, namePanel, passPanel, btnPanel;
+    private JPanel panel, usernamePanel, passPanel, btnPanel;
     private JButton loginBtn, regBtn;
     
     public LoginPage(){
@@ -26,13 +26,13 @@ public class LoginPage {
         loginLabel.setBorder(new EmptyBorder(10,0,0,0));
         frame.add(loginLabel, BorderLayout.NORTH);
         
-        namePanel = new JPanel();
-        namePanel.setLayout(new GridLayout(1,2));
-        nameLabel = new JLabel("Username: ");
-        nameTextField = new JTextField();
-        namePanel.add(nameLabel);
-        namePanel.add(nameTextField);
-        panel.add(namePanel);
+        usernamePanel = new JPanel();
+        usernamePanel.setLayout(new GridLayout(1,2));
+        usernameLabel = new JLabel("Username: ");
+        usernameTextField = new JTextField();
+        usernamePanel.add(usernameLabel);
+        usernamePanel.add(usernameTextField);
+        panel.add(usernamePanel);
         
         passPanel = new JPanel();
         passPanel.setLayout(new GridLayout(1,2));
@@ -56,11 +56,14 @@ public class LoginPage {
         frame.setSize(450,350);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        frame.setVisible(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
     public JButton getLoginBtn(){return this.loginBtn;}
     public JButton getRegBtn(){return this.regBtn;}
     public JFrame getFrame(){return this.frame;}
+    
+    public JTextField getUsernameTextField(){return this.usernameTextField;}
+    public JPasswordField getPasswordField(){return this.passField;}
 }
