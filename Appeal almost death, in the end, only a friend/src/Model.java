@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.sql.*;
-import java.util.Arrays;
 
 public class Model {
     private Account account;
@@ -54,6 +53,31 @@ public class Model {
             }
         } 
         catch (SQLException e) {e.printStackTrace();}
+    }
+    
+    public boolean checkUserName(String username){
+        try {
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql","root","");
+            s = connect.createStatement();
+            String sql = "select username from account where username = '"+username+"';";
+            ResultSet rs = s.executeQuery(sql);
+            return rs.next();
+        }
+        catch (Exception e) {e.printStackTrace(); return false;}
+    }
+    
+    public boolean checkPassword(String username,String password){
+        try {
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql","root","");
+            s = connect.createStatement();
+            String sql = "select * from account where username = '"+username+"';";
+            ResultSet rs = s.executeQuery(sql);
+            if(rs.next()){
+                return password.equals(rs.getString("password"));
+            }
+            else{return false;}
+        }
+        catch (Exception e) {e.printStackTrace(); return false;}
     }
     
     public void creatAccount(){
