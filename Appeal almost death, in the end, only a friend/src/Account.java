@@ -10,15 +10,15 @@ public class Account {
         this.email = email;
     }
     
-    public String setFirstname(){return this.firstname;}
-    public String setLastname(){return this.lastname;}
-    public String setUsername(){return this.username;}
-    public String setPassword(){return this.password;}
-    public String setEmail(){return this.email;}
+    public String getFirstname(){return this.firstname;}
+    public String getLastname(){return this.lastname;}
+    public String getUsername(){return this.username;}
+    public String getPassword(){return this.password;}
+    public String getEmail(){return this.email;}
     
-    public void getFirstname(String firstname){this.firstname = firstname;}
-    public void getLastname(String lastname){this.lastname = lastname;}
-    public void getUsername(String username){this.username = username;}
-    public void getPassword(String password){this.password = password;}
-    public void getEmail(String email){this.email = email;}
+    public void setFirstname(String firstname){this.firstname = firstname;}
+    public void setLastname(String lastname){this.lastname = lastname;}
+    public void setUsername(String username){this.username = username;}
+    public void setPassword(String password){this.password = password;}
+    public void setEmail(String email){this.email = email;}
 }
