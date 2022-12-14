@@ -24,7 +24,7 @@ public class Controller implements ActionListener, WindowListener{
         regPage.getLoginBtn().addActionListener(this);
         loginPage.getRegBtn().addActionListener(this);
         loginPage.getLoginBtn().addActionListener(this);
-        mainPage.getFrame().addWindowListener(this);
+        loginPage.getFrame().addWindowListener(this);
     }
 
     @Override
@@ -65,10 +65,11 @@ public class Controller implements ActionListener, WindowListener{
                         else{
                             String email = regPage.getEmailTextField().getText();
                             if(Arrays.equals(regPage.getPasswordField().getPassword(), regPage.getConfirmPassField().getPassword()) && (regPage.getPasswordField().getPassword()).length!=0){
-                                String password = Arrays.toString(regPage.getPasswordField().getPassword());
+                                String password = String.valueOf(regPage.getPasswordField().getPassword());
                                 regPage.getFrame().setVisible(false);
                                 mainPage.getFrame().setVisible(true);
                                 model.setAccount(new Account(firstname,lastname,username,password,email));
+                                model.creatAccount();
                             }
                             else if(regPage.getPasswordField().getPassword().length==0){
                                 JOptionPane.showMessageDialog(regPage.getFrame(),"Please enter your password.","Missing Password",JOptionPane.WARNING_MESSAGE);
@@ -83,8 +84,8 @@ public class Controller implements ActionListener, WindowListener{
         }
     }
 
-    @Override public void windowOpened(WindowEvent e) {model.openDataBase();}
-    @Override public void windowClosing(WindowEvent e) {model.closeDataBase();}
+    @Override public void windowOpened(WindowEvent e) {model.loadSettings(); model.openDataBase();}
+    @Override public void windowClosing(WindowEvent e) {model.saveSettings(); model.closeDataBase();}
     @Override public void windowClosed(WindowEvent e) {}
     @Override public void windowIconified(WindowEvent e) {}
     @Override public void windowDeiconified(WindowEvent e) {}
