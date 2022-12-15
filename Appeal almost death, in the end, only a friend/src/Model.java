@@ -25,7 +25,10 @@ public class Model {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql","root","");
             s = connect.createStatement();
-            if(settings.getTableCreated()==false){
+            DatabaseMetaData dbm = connect.getMetaData();
+            ResultSet tables = dbm.getTables(null, null, "account", null);
+            if (tables.next()){settings.setTableCreated(true);}
+            else{
                 String sql = 
                         "create table account("
                         + "ID int not null auto_increment,"
@@ -34,15 +37,14 @@ public class Model {
                         + "username varchar(50) not null unique,"
                         + "email varchar(80) not null,"
                         + "password varchar(50) not null,"
+                        + "admin bit(1) not null,"
                         + "primary key (ID)"
                         + ");";
                 boolean n = s.execute(sql);
                 settings.setTableCreated(true);
             }
         } 
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+        catch (Exception e) {e.printStackTrace();}
     }
     
     public void closeDataBase(){
@@ -63,7 +65,7 @@ public class Model {
             ResultSet rs = s.executeQuery(sql);
             return rs.next();
         }
-        catch (Exception e) {e.printStackTrace(); return false;}
+        catch (SQLException e) {e.printStackTrace(); return false;}
     }
     
     public boolean checkPassword(String username,String password){
@@ -77,7 +79,26 @@ public class Model {
             }
             else{return false;}
         }
-        catch (Exception e) {e.printStackTrace(); return false;}
+        catch (SQLException e) {e.printStackTrace(); return false;}
+    }
+    
+    public void login(String username){
+        try {
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql","root","");
+            s = connect.createStatement();
+            String sql = "select * from account where username = '"+username+"';";
+            ResultSet rs = s.executeQuery(sql);
+            if(rs.next()){
+                account = new Account(rs.getString("firstname")
+                        ,rs.getString("lastname")
+                        ,rs.getString("username")
+                        ,rs.getString("password")
+                        ,rs.getString("email")
+                        ,rs.getBoolean("admin")
+                );
+            }
+        }
+        catch (SQLException e) {e.printStackTrace();}
     }
     
     public void creatAccount(){
@@ -89,11 +110,11 @@ public class Model {
             String username = account.getUsername();
             String email = account.getEmail();
             String password = account.getPassword();
-            String sql = "INSERT INTO account (firstname,lastname,username,email,password)"
-                    + " VALUES ("+"'"+firstname+"'"+","+"'"+lastname+"'"+","+"'"+username+"'"+","+"'"+email+"'"+","+"'"+password+"'"+");";
+            String sql = "INSERT INTO account (firstname,lastname,username,email,password,admin)"
+                    + " VALUES ("+"'"+firstname+"'"+","+"'"+lastname+"'"+","+"'"+username+"'"+","+"'"+email+"'"+","+"'"+password+"'"+",0);";
             int n = s.executeUpdate(sql);
         } 
-        catch (Exception e) {e.printStackTrace();}
+        catch (SQLException e) {e.printStackTrace();}
     }
     
     public void saveSettings(){

@@ -2,24 +2,29 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.SystemColor;
+/*import java.awt.Font;
+import java.awt.SystemColor;*/
 import javax.swing.*;
-import org.jfree.chart.*;
+/*import org.jfree.chart.*;
 import org.jfree.chart.plot.*;
 import org.jfree.chart.renderer.category.*;
 
-import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;*/
 
 public class MainPage {
     private JFrame frame;
-    private JPanel menuPanel, chartPanel;
-    private JButton iconBtn, reportBtn, accountBtn, settingBtn;
+    private JPanel menuPanel;
+    private JButton iconBtn, reportBtn, accountBtn, settingsBtn;
+    private SettingsPanel settingsPanel;
+    private ChartsPanel chartPanel;
     public static final Color VERY_LIGHT_RED = new Color(51,204,255);
     
     public MainPage(){
         frame = new JFrame("Call Sing");
         frame.setLayout(new BorderLayout());
+        
+        settingsPanel = new SettingsPanel();
+        chartPanel = new ChartsPanel();
         
         menuPanel = new JPanel();
         menuPanel.setLayout(new GridLayout(1,4));
@@ -40,12 +45,12 @@ public class MainPage {
         accountBtn.setOpaque(true);
         menuPanel.add(accountBtn);
         
-        settingBtn = new JButton("Settings");
-        settingBtn.setBackground(new Color(85,189,96));
-        settingBtn.setOpaque(true);
-        menuPanel.add(settingBtn);
+        settingsBtn = new JButton("Settings");
+        settingsBtn.setBackground(new Color(85,189,96));
+        settingsBtn.setOpaque(true);
+        menuPanel.add(settingsBtn);
         
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        /*DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         dataset.setValue(80, "Marks", "พื้นที่เปลี่ยว");
         dataset.setValue(50, "Marks", "พื้นที่ชำรุด");
         dataset.setValue(75, "Marks", "พื้นที่ผิดกฎหมาย");
@@ -78,7 +83,7 @@ public class MainPage {
         chartPanel = new JPanel();
         chartPanel.setLayout(new java.awt.BorderLayout());
         chartPanel.add(cp,BorderLayout.CENTER);
-        chartPanel.validate();
+        chartPanel.validate();*/
         
         frame.add(menuPanel, BorderLayout.NORTH);
         frame.add(chartPanel, BorderLayout.CENTER);
@@ -91,5 +96,21 @@ public class MainPage {
     
     public JFrame getFrame(){return this.frame;}    
     
+    public JButton getIconButton(){return this.iconBtn;}
+    public JButton getReportButton(){return this.reportBtn;}
+    public JButton getAccountButton(){return this.accountBtn;}
+    public JButton getSettingsButton(){return this.settingsBtn;}
+    
+    public void setSettingsPanel(){
+        settingsPanel = new SettingsPanel();
+        frame.add(settingsPanel);
+        frame.revalidate();
+    }
+    
+    public void setMainPanel(){
+        chartPanel = new ChartsPanel();
+        frame.add(chartPanel);
+        frame.revalidate();
+    }
 }
     

@@ -25,6 +25,10 @@ public class Controller implements ActionListener, WindowListener{
         loginPage.getRegBtn().addActionListener(this);
         loginPage.getLoginBtn().addActionListener(this);
         loginPage.getFrame().addWindowListener(this);
+        mainPage.getIconButton().addActionListener(this);
+        mainPage.getReportButton().addActionListener(this);
+        mainPage.getAccountButton().addActionListener(this);
+        mainPage.getSettingsButton().addActionListener(this);
         mainPage.getFrame().addWindowListener(this);
         regPage.getFrame().addWindowListener(this);
         loginPage.getFrame().setVisible(true);
@@ -45,6 +49,7 @@ public class Controller implements ActionListener, WindowListener{
                     String password = String.valueOf(loginPage.getPasswordField().getPassword());
                     if(model.checkUserName(username)==true){   
                         if(model.checkPassword(username, password)==true){
+                            model.login(username);
                             loginPage.getFrame().setVisible(false);
                             mainPage.getFrame().setVisible(true);
                         }
@@ -93,7 +98,7 @@ public class Controller implements ActionListener, WindowListener{
                                     JOptionPane.showMessageDialog(regPage.getFrame(),"This username is already used. Please change your username.","Username is already used",JOptionPane.ERROR_MESSAGE);
                                 }
                                 else{
-                                    model.setAccount(new Account(firstname,lastname,username,password,email));
+                                    model.setAccount(new Account(firstname,lastname,username,password,email,false));
                                     model.creatAccount();
                                     regPage.getFrame().setVisible(false);
                                     mainPage.getFrame().setVisible(true);  
@@ -110,6 +115,8 @@ public class Controller implements ActionListener, WindowListener{
                 }
             }
         }
+        if(e.getSource().equals(mainPage.getIconButton())){mainPage.setMainPanel();}
+        if(e.getSource().equals(mainPage.getSettingsButton())){mainPage.setSettingsPanel();}
     }
 
     @Override public void windowOpened(WindowEvent e) {model.loadSettings(); model.openDataBase();}
