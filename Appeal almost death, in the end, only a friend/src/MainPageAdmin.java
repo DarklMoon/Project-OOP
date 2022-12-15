@@ -10,11 +10,16 @@ public class MainPageAdmin {
     private JButton iconBtn, reportBtn, accountBtn, settingBtn;
     private ReportTablePanel reportTable;
     private ChartsAdminPanel chartAdminPanel;
+    private SettingsPanel settingsPanel;
     
     public MainPageAdmin(){
         frame = new JFrame("Call Sing");
         frame.setLayout(new BorderLayout());
         
+        chartAdminPanel = new ChartsAdminPanel();
+        reportTable = new ReportTablePanel();
+        settingsPanel = new SettingsPanel();
+                
         menuPanel = new JPanel();
         menuPanel.setLayout(new GridLayout(1,4));
         menuPanel.setPreferredSize(new Dimension(800,100));
@@ -61,11 +66,21 @@ public class MainPageAdmin {
         frame.add(reportTable, BorderLayout.CENTER);
         reportTable.setVisible(true);
         chartAdminPanel.setVisible(false);
+        settingsPanel.setVisible(false);
+        frame.revalidate();
+    }
+    
+    public void setSettingsPanel(){
+        frame.add(settingsPanel, BorderLayout.CENTER);
+        settingsPanel.setVisible(true);
+        chartAdminPanel.setVisible(false);
+        reportTable.setVisible(false);
         frame.revalidate();
     }
     
     public void setMainPanel(){
         reportTable.setVisible(false);
+        settingsPanel.setVisible(false);
         chartAdminPanel.setVisible(true);
         frame.revalidate();
     }

@@ -157,6 +157,10 @@ public class Report {
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+    
+    public static void main(String[] args) {
+        new Report();
+    }
 }
 //top, left, bottom, and right
 //สิ่งที่ควรมีหน้า Report :

@@ -2,24 +2,22 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.SystemColor;
 import javax.swing.*;
-import org.jfree.chart.*;
-import org.jfree.chart.plot.*;
-import org.jfree.chart.renderer.category.*;
-
-import org.jfree.data.category.DefaultCategoryDataset;
 
 public class MainPage {
     private JFrame frame;
-    private JPanel menuPanel, chartPanel;
-    private JButton iconBtn, reportBtn, accountBtn, settingBtn;
-    public static final Color COLOR = new Color(51,204,255);
-    
+    private JPanel menuPanel;
+    private JButton iconBtn, reportBtn, accountBtn, settingsBtn;
+    private SettingsPanel settingsPanel;
+    private ChartsPanel chartPanel;
+
+
     public MainPage(){
         frame = new JFrame("Call Sing");
         frame.setLayout(new BorderLayout());
+        
+        settingsPanel = new SettingsPanel();
+        chartPanel = new ChartsPanel();
         
         menuPanel = new JPanel();
         menuPanel.setLayout(new GridLayout(1,4));
@@ -40,45 +38,13 @@ public class MainPage {
         accountBtn.setOpaque(true);
         menuPanel.add(accountBtn);
         
-        settingBtn = new JButton("Settings");
-        settingBtn.setBackground(new Color(85,189,96));
-        settingBtn.setOpaque(true);
-        menuPanel.add(settingBtn);
+        settingsBtn = new JButton("Settings");
+        settingsBtn.setBackground(new Color(85,189,96));
+        settingsBtn.setOpaque(true);
+        menuPanel.add(settingsBtn);
         
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        dataset.setValue(80, "Marks", "พื้นที่เปลี่ยว");
-        dataset.setValue(50, "Marks", "พื้นที่ชำรุด");
-        dataset.setValue(75, "Marks", "พื้นที่ผิดกฎหมาย");
-        dataset.setValue(95, "Marks", "อบายมุข");
-        dataset.setValue(10, "Marks", "ผู้กระทำผิดทางจราจร");
-        dataset.setValue(45, "Marks", "สินค้าไม่ได้มาตรฐาน");
-        dataset.setValue(35, "Marks", "ทุจริต/คอรัปชั่น");
-        dataset.setValue(70, "Marks", "อื่นๆ");
-        JFreeChart chart = ChartFactory.createBarChart3D("กราฟแสดงจำนวนการร้องเรียน", "ประเภทของการร้องเรียน", "จำนวนครั้ง", dataset, PlotOrientation.VERTICAL, false, true, false);
-        chart.setBackgroundPaint(Color.WHITE);
-        chart.getTitle().setPaint(Color.BLACK); 
-        CategoryPlot p = chart.getCategoryPlot();
-        p.setRangeGridlinePaint(Color.WHITE);
-        
-        p = (CategoryPlot)chart.getPlot();
-        p.setBackgroundPaint(SystemColor.inactiveCaption);//change background color
-
-    //set  bar chart color
-        ((BarRenderer)p.getRenderer()).setBarPainter(new StandardBarPainter());
-
-        BarRenderer r = (BarRenderer)chart.getCategoryPlot().getRenderer();
-        r.setSeriesPaint(0, COLOR);
-        
-        CategoryPlot plot = (CategoryPlot) chart.getPlot();
-        plot= chart.getCategoryPlot();
-        plot.setNoDataMessage("NO DATA");
-        plot.setNoDataMessageFont(new Font("Arial", Font.BOLD, 30));
-        plot.setNoDataMessagePaint(Color.RED);
-        ChartPanel cp = new ChartPanel(chart);
-        chartPanel = new JPanel();
-        chartPanel.setLayout(new java.awt.BorderLayout());
-        chartPanel.add(cp,BorderLayout.CENTER);
-        chartPanel.validate();
+        chartPanel.setVisible(true);
+        settingsPanel.setVisible(false);
         
         frame.add(menuPanel, BorderLayout.NORTH);
         frame.add(chartPanel, BorderLayout.CENTER);
@@ -91,5 +57,22 @@ public class MainPage {
     
     public JFrame getFrame(){return this.frame;}    
     
+    public JButton getIconButton(){return this.iconBtn;}
+    public JButton getReportButton(){return this.reportBtn;}
+    public JButton getAccountButton(){return this.accountBtn;}
+    public JButton getSettingsButton(){return this.settingsBtn;}
+    
+    public void setSettingsPanel(){
+        frame.add(settingsPanel, BorderLayout.CENTER);
+        settingsPanel.setVisible(true);
+        chartPanel.setVisible(false);
+        frame.revalidate();
+    }
+    
+    public void setMainPanel(){
+        settingsPanel.setVisible(false);
+        chartPanel.setVisible(true);
+        frame.revalidate();
+    }
 }
     

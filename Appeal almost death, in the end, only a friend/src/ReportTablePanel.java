@@ -226,6 +226,10 @@ public class ReportTablePanel extends JPanel{
             }
         }
         
+        public void setValueAt(Object value, int row, int col) {
+            data[row][col] = value;
+            fireTableCellUpdated(row, col);
+        }
     }
 }
 

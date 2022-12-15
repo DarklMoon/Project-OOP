@@ -9,12 +9,14 @@ public class Controller implements ActionListener, WindowListener{
     private RegisterPage regPage;
     private LoginPage loginPage;
     private MainPage mainPage;
+    private MainPageAdmin mainPageAdmin;
     private Model model;
     
     public Controller(){
         regPage = new RegisterPage();
         loginPage = new LoginPage();
         mainPage = new MainPage();
+        mainPageAdmin = new MainPageAdmin();
         model = new Model();
         init();
     }
@@ -25,6 +27,15 @@ public class Controller implements ActionListener, WindowListener{
         loginPage.getRegBtn().addActionListener(this);
         loginPage.getLoginBtn().addActionListener(this);
         loginPage.getFrame().addWindowListener(this);
+        mainPage.getIconButton().addActionListener(this);
+        mainPage.getReportButton().addActionListener(this);
+        mainPage.getAccountButton().addActionListener(this);
+        mainPage.getSettingsButton().addActionListener(this);
+        mainPageAdmin.getIconButton().addActionListener(this);
+        mainPageAdmin.getReportButton().addActionListener(this);
+        mainPageAdmin.getAccountButton().addActionListener(this);
+        mainPageAdmin.getSettingsButton().addActionListener(this);
+        mainPageAdmin.getFrame().addWindowListener(this);
         mainPage.getFrame().addWindowListener(this);
         regPage.getFrame().addWindowListener(this);
         loginPage.getFrame().setVisible(true);
@@ -45,8 +56,9 @@ public class Controller implements ActionListener, WindowListener{
                     String password = String.valueOf(loginPage.getPasswordField().getPassword());
                     if(model.checkUserName(username)==true){   
                         if(model.checkPassword(username, password)==true){
+                            model.login(username);
                             loginPage.getFrame().setVisible(false);
-                            mainPage.getFrame().setVisible(true);
+                            mainPageAdmin.getFrame().setVisible(true);
                         }
                         else{
                             JOptionPane.showMessageDialog(loginPage.getFrame(),"Password not match. Please try again.","Incorrect Password",JOptionPane.ERROR_MESSAGE);
@@ -93,10 +105,10 @@ public class Controller implements ActionListener, WindowListener{
                                     JOptionPane.showMessageDialog(regPage.getFrame(),"This username is already used. Please change your username.","Username is already used",JOptionPane.ERROR_MESSAGE);
                                 }
                                 else{
-                                    model.setAccount(new Account(firstname,lastname,username,password,email));
+                                    model.setAccount(new Account(firstname,lastname,username,password,email,false));
                                     model.creatAccount();
                                     regPage.getFrame().setVisible(false);
-                                    mainPage.getFrame().setVisible(true);  
+                                    loginPage.getFrame().setVisible(true);
                                 }
                             }
                             else if(regPage.getPasswordField().getPassword().length==0){
@@ -110,6 +122,12 @@ public class Controller implements ActionListener, WindowListener{
                 }
             }
         }
+        if(e.getSource().equals(mainPage.getIconButton())){mainPage.setMainPanel();}
+        if(e.getSource().equals(mainPage.getSettingsButton())){mainPage.setSettingsPanel();}
+        if(e.getSource().equals(mainPageAdmin.getIconButton())){mainPageAdmin.setMainPanel();}
+        if(e.getSource().equals(mainPageAdmin.getReportButton())){mainPageAdmin.setReportTablePanel();}
+        if(e.getSource().equals(mainPageAdmin.getSettingsButton())){mainPageAdmin.setSettingsPanel();}
+        
     }
 
     @Override public void windowOpened(WindowEvent e) {model.loadSettings(); model.openDataBase();}
