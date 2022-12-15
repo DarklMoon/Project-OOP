@@ -23,7 +23,7 @@ public class Model {
     public void openDataBase(){
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql","root","dark1234");
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql","root","");
             s = connect.createStatement();
             DatabaseMetaData dbm = connect.getMetaData();
             ResultSet tables = dbm.getTables(null, null, "account", null);
@@ -59,7 +59,7 @@ public class Model {
     
     public boolean checkUserName(String username){
         try {
-            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql","root","dark1234");
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql","root","");
             s = connect.createStatement();
             String sql = "select username from account where username = '"+username+"';";
             ResultSet rs = s.executeQuery(sql);
@@ -70,7 +70,7 @@ public class Model {
     
     public boolean checkPassword(String username,String password){
         try {
-            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql","root","dark1234");
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql","root","");
             s = connect.createStatement();
             String sql = "select * from account where username = '"+username+"';";
             ResultSet rs = s.executeQuery(sql);
@@ -84,7 +84,7 @@ public class Model {
     
     public void login(String username){
         try {
-            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql","root","dark1234");
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql","root","");
             s = connect.createStatement();
             String sql = "select * from account where username = '"+username+"';";
             ResultSet rs = s.executeQuery(sql);
@@ -103,7 +103,7 @@ public class Model {
     
     public void creatAccount(){
         try {
-            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql","root","dark1234");
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql","root","");
             s = connect.createStatement();
             String firstname = account.getFirstname();
             String lastname = account.getLastname();
