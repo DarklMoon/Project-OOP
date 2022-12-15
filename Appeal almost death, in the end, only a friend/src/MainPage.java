@@ -15,7 +15,7 @@ public class MainPage {
     private JFrame frame;
     private JPanel menuPanel, chartPanel;
     private JButton iconBtn, reportBtn, accountBtn, settingBtn;
-    public static final Color VERY_LIGHT_RED = new Color(51,204,255);
+    public static final Color COLOR = new Color(51,204,255);
     
     public MainPage(){
         frame = new JFrame("Call Sing");
@@ -67,7 +67,7 @@ public class MainPage {
         ((BarRenderer)p.getRenderer()).setBarPainter(new StandardBarPainter());
 
         BarRenderer r = (BarRenderer)chart.getCategoryPlot().getRenderer();
-        r.setSeriesPaint(0, VERY_LIGHT_RED);
+        r.setSeriesPaint(0, COLOR);
         
         CategoryPlot plot = (CategoryPlot) chart.getPlot();
         plot= chart.getCategoryPlot();
