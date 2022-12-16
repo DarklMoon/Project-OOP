@@ -1,24 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
 import javax.swing.border.*;
 import static javax.swing.ScrollPaneConstants.*;
 
-/**
- *
- * @author aom
- */
-public class Report implements ActionListener {
+public class ReportPanel extends JPanel{
 
-    private JFrame frame;
-    private JPanel menuPanel, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11;
-    private JButton iconBtn, reportBtn, accountBtn, settingBtn, submitBtn, addBtn;
+    private JPanel p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11;
+    private JButton submitBtn, addBtn;
     private JLabel lb1, lb2, lb3, lb4, lb5, lb6, lbC;
     private JTextField tf1, tf2, tf3;
     private JComboBox cb;
@@ -28,33 +16,8 @@ public class Report implements ActionListener {
     private JScrollPane scroll;
     public static final Color VERY_LIGHT_RED = new Color(51, 204, 255);
 
-    public Report() {
-        frame = new JFrame("Appname");
-        frame.setLayout(new BorderLayout());
-
-        menuPanel = new JPanel();
-        menuPanel.setLayout(new GridLayout(1, 4));
-        menuPanel.setPreferredSize(new Dimension(800, 100));
-
-        iconBtn = new JButton("Appname");
-        iconBtn.setBackground(new Color(217, 217, 217));
-        iconBtn.setOpaque(true);
-        menuPanel.add(iconBtn);
-
-        reportBtn = new JButton("Report");
-        reportBtn.setBackground(new Color(255, 97, 97));
-        reportBtn.setOpaque(true);
-        menuPanel.add(reportBtn);
-
-        accountBtn = new JButton("Account");
-        accountBtn.setBackground(new Color(111, 168, 255));
-        accountBtn.setOpaque(true);
-        menuPanel.add(accountBtn);
-
-        settingBtn = new JButton("Settings");
-        settingBtn.setBackground(new Color(85, 189, 96));
-        settingBtn.setOpaque(true);
-        menuPanel.add(settingBtn);
+    public ReportPanel() {
+        this.setLayout(new BorderLayout());
 
         font = new Font("Tahoma", Font.PLAIN, 16);
         font2 = new Font("Tahoma", Font.PLAIN, 20);
@@ -92,7 +55,6 @@ public class Report implements ActionListener {
         ta.setFont(font);
         submitBtn = new JButton("Submit");
         addBtn = new JButton("Add Image");
-        addBtn.addActionListener(this);
 
         p1 = new JPanel();
         p2 = new JPanel();
@@ -180,21 +142,11 @@ public class Report implements ActionListener {
         p9.add(lb1, BorderLayout.NORTH);
         p9.add(p1, BorderLayout.CENTER);
         
-        frame.add(menuPanel, BorderLayout.NORTH);
-        frame.add(p9, BorderLayout.CENTER);
-        frame.add(p7, BorderLayout.SOUTH);
-
-        frame.setVisible(true);
-        frame.setSize(1024, 640);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.add(p9, BorderLayout.CENTER);
+        this.add(p7, BorderLayout.SOUTH);
     }
 
-    public static void main(String[] args) {
-        new Report();
-    }
-
-    @Override
+    /*@Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource().equals(addBtn)) {
             JFileChooser fc = new JFileChooser();
@@ -202,7 +154,7 @@ public class Report implements ActionListener {
             File f = fc.getSelectedFile();
 
         }
-    }
+    }*/
 }//top, left, bottom, and right
 //สิ่งที่ควรมีหน้า Report :
 //- เลือกประเภทร้องเรียน (ใช้ ComboBox เลือกประเภท)

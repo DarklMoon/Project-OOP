@@ -8,13 +8,13 @@ import java.sql.*;
 
 public class Model {
     private Account account;
-    private Settings settings;
     private Connection connect = null;
     private Statement s = null;
+    private String sqlUsername = "root";
+    private String sqlPassword = "";
     
     public Model(){
         account = new Account();
-        settings = new Settings();
     }
     
     public Account getAccount(){return this.account;}
@@ -23,12 +23,11 @@ public class Model {
     public void openDataBase(){
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql","root","");
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql",this.sqlUsername,this.sqlPassword);
             s = connect.createStatement();
             DatabaseMetaData dbm = connect.getMetaData();
             ResultSet tables = dbm.getTables(null, null, "account", null);
-            if (tables.next()){settings.setTableCreated(true);}
-            else{
+            if (!tables.next()){
                 String sql = 
                         "create table account("
                         + "ID int not null auto_increment,"
@@ -41,7 +40,6 @@ public class Model {
                         + "primary key (ID)"
                         + ");";
                 boolean n = s.execute(sql);
-                settings.setTableCreated(true);
             }
         } 
         catch (Exception e) {e.printStackTrace();}
@@ -59,7 +57,7 @@ public class Model {
     
     public boolean checkUserName(String username){
         try {
-            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql","root","");
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql",this.sqlUsername,this.sqlPassword);
             s = connect.createStatement();
             String sql = "select username from account where username = '"+username+"';";
             ResultSet rs = s.executeQuery(sql);
@@ -70,7 +68,7 @@ public class Model {
     
     public boolean checkPassword(String username,String password){
         try {
-            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql","root","");
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql",this.sqlUsername,this.sqlPassword);
             s = connect.createStatement();
             String sql = "select * from account where username = '"+username+"';";
             ResultSet rs = s.executeQuery(sql);
@@ -84,7 +82,7 @@ public class Model {
     
     public void login(String username){
         try {
-            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql","root","");
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql",this.sqlUsername,this.sqlPassword);
             s = connect.createStatement();
             String sql = "select * from account where username = '"+username+"';";
             ResultSet rs = s.executeQuery(sql);
@@ -103,7 +101,7 @@ public class Model {
     
     public void creatAccount(){
         try {
-            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql","root","");
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql",this.sqlUsername,this.sqlPassword);
             s = connect.createStatement();
             String firstname = account.getFirstname();
             String lastname = account.getLastname();
@@ -115,31 +113,5 @@ public class Model {
             int n = s.executeUpdate(sql);
         } 
         catch (SQLException e) {e.printStackTrace();}
-    }
-    
-    public void saveSettings(){
-        try {
-            FileOutputStream fOut = new FileOutputStream("Settings.conf");
-            ObjectOutputStream oout = new ObjectOutputStream(fOut);
-            oout.writeObject(settings);
-            oout.close(); 
-            fOut.close();
-        } 
-        catch (IOException e) {e.printStackTrace();} 
-    }
-    
-    public void loadSettings(){
-        File f = new File("Settings.conf");
-        if(f.exists() && !f.isDirectory()){ 
-            try {
-                FileInputStream fin = new FileInputStream("Settings.conf");
-                ObjectInputStream in = new ObjectInputStream(fin);
-                settings = (Settings) in.readObject();
-                in.close();
-                fin.close();
-            } 
-            catch (IOException i) {i.printStackTrace();} 
-            catch (ClassNotFoundException c) {c.printStackTrace();}
-        }
     }
 }

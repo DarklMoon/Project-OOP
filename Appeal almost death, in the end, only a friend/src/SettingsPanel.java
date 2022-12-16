@@ -20,7 +20,9 @@ public class SettingsPanel extends JPanel{
         this.add(settingsLabel, BorderLayout.NORTH);
         
         panel = new JPanel();
-        panel.setLayout(new GridLayout(2,1));
+        GridLayout layout = new GridLayout(2,1);
+        layout.setVgap(50);
+        panel.setLayout(layout);
         panel.setBorder(new EmptyBorder(50,350,100,350));
         
         setAdminBtn = new JButton("Admin Verifying");
@@ -30,4 +32,7 @@ public class SettingsPanel extends JPanel{
         panel.add(LogoutBtn);
         this.add(panel, BorderLayout.CENTER);
     }
+    
+    public JButton getAdminButton(){return this.setAdminBtn;}
+    public JButton getLoginButton(){return this.setAdminBtn;}
 }

@@ -10,6 +10,7 @@ public class Controller implements ActionListener, WindowListener{
     private LoginPage loginPage;
     private MainPage mainPage;
     private MainPageAdmin mainPageAdmin;
+    private SetAdmin setAdmin;
     private Model model;
     
     public Controller(){
@@ -17,6 +18,7 @@ public class Controller implements ActionListener, WindowListener{
         loginPage = new LoginPage();
         mainPage = new MainPage();
         mainPageAdmin = new MainPageAdmin();
+        setAdmin = new SetAdmin();
         model = new Model();
         init();
     }
@@ -37,6 +39,7 @@ public class Controller implements ActionListener, WindowListener{
         mainPageAdmin.getSettingsButton().addActionListener(this);
         mainPageAdmin.getFrame().addWindowListener(this);
         mainPage.getFrame().addWindowListener(this);
+        mainPage.getSettingsPanel().getAdminButton().addActionListener(this);
         regPage.getFrame().addWindowListener(this);
         loginPage.getFrame().setVisible(true);
     }
@@ -58,7 +61,8 @@ public class Controller implements ActionListener, WindowListener{
                         if(model.checkPassword(username, password)==true){
                             model.login(username);
                             loginPage.getFrame().setVisible(false);
-                            mainPageAdmin.getFrame().setVisible(true);
+                            if(model.getAccount().getIsAdmin()==true){mainPageAdmin.getFrame().setVisible(true);}
+                            else{mainPage.getFrame().setVisible(true);}
                         }
                         else{
                             JOptionPane.showMessageDialog(loginPage.getFrame(),"Password not match. Please try again.","Incorrect Password",JOptionPane.ERROR_MESSAGE);
@@ -123,15 +127,19 @@ public class Controller implements ActionListener, WindowListener{
             }
         }
         if(e.getSource().equals(mainPage.getIconButton())){mainPage.setMainPanel();}
+        if(e.getSource().equals(mainPage.getReportButton())){mainPage.setReportPanel();}
         if(e.getSource().equals(mainPage.getSettingsButton())){mainPage.setSettingsPanel();}
+        
         if(e.getSource().equals(mainPageAdmin.getIconButton())){mainPageAdmin.setMainPanel();}
         if(e.getSource().equals(mainPageAdmin.getReportButton())){mainPageAdmin.setReportTablePanel();}
         if(e.getSource().equals(mainPageAdmin.getSettingsButton())){mainPageAdmin.setSettingsPanel();}
         
+        if(e.getSource().equals(mainPage.getSettingsPanel().getAdminButton())){setAdmin.getFrame().setVisible(true);}
+        
     }
 
-    @Override public void windowOpened(WindowEvent e) {model.loadSettings(); model.openDataBase();}
-    @Override public void windowClosing(WindowEvent e) {model.saveSettings(); model.closeDataBase();}
+    @Override public void windowOpened(WindowEvent e) {model.openDataBase();}
+    @Override public void windowClosing(WindowEvent e) {model.closeDataBase();}
     @Override public void windowClosed(WindowEvent e) {}
     @Override public void windowIconified(WindowEvent e) {}
     @Override public void windowDeiconified(WindowEvent e) {}

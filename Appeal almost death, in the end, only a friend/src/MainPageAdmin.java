@@ -13,7 +13,7 @@ public class MainPageAdmin {
     private SettingsPanel settingsPanel;
     
     public MainPageAdmin(){
-        frame = new JFrame("Call Sing");
+        frame = new JFrame("Call Sing [Admin]");
         frame.setLayout(new BorderLayout());
         
         chartAdminPanel = new ChartsAdminPanel();
