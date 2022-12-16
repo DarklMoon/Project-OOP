@@ -5,6 +5,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import java.util.*;
 import javax.swing.border.*;
 
@@ -12,17 +13,17 @@ import javax.swing.border.*;
  *
  * @author aom
  */
-public class Report {
+public class Report implements ActionListener {
 
     private JFrame frame;
     private JPanel menuPanel, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11;
-    private JButton iconBtn, reportBtn, accountBtn, settingBtn, submitBtn;
-    private JLabel lb1, lb2, lb3, lb4, lb5, lb6;
+    private JButton iconBtn, reportBtn, accountBtn, settingBtn, submitBtn, addBtn;
+    private JLabel lb1, lb2, lb3, lb4, lb5, lb6, lbC;
     private JTextField tf1, tf2, tf3;
     private JComboBox cb;
     private JTextArea ta;
-    private Box b1, b2, b3, b4, b5;
-    private Font font;
+    private Box b1, b2, b3, b4, b5, b6;
+    private Font font, font2;
     public static final Color VERY_LIGHT_RED = new Color(51, 204, 255);
 
     public Report() {
@@ -54,16 +55,25 @@ public class Report {
         menuPanel.add(settingBtn);
 
         font = new Font("Tahoma", Font.PLAIN, 16);
-        lb1 = new JLabel("Please fill out the complaint form");
+        font2 = new Font("Tahoma", Font.PLAIN, 20);
+        lb1 = new JLabel("Please fill out the complaint form", JLabel.CENTER);
+        lb1.setFont(font2);
         lb2 = new JLabel("Complaint types", JLabel.CENTER);
         lb3 = new JLabel("Location", JLabel.CENTER);
         lb4 = new JLabel("Date", JLabel.CENTER);
         lb5 = new JLabel("Details", JLabel.CENTER);
         lb6 = new JLabel("Image", JLabel.CENTER);
+//        lb4 = new JLabel("", JLabel.CENTER);
         cb = new JComboBox();
-        cb.addItem("test");
+        cb.addItem("พื้นที่ชำรุด (แก้ไขทางเดิน, แก้ไขสายไฟ)");
+        cb.addItem("พื้นที่ไม่ปลอดภัย (พื้นที่ไม่ปลอดภัย)");
+        cb.addItem("อบายมุข (ยาเสพติด,บ่อนพนัน)");
+        cb.addItem("ผู้กระทำผิดทางจราจร");
+        cb.addItem("สินค้าไม่ได้มาตรฐาน");
+        cb.addItem("ทุจริต/คอรัปชั่น");
+        cb.addItem("อื่น ๆ");
         cb.setFont(font);
-        cb.setPreferredSize(new Dimension(0, 0));
+        cb.setPreferredSize(new Dimension(0, 10));
         tf1 = new JTextField(30);
         tf1.setFont(font);
         tf1.setMaximumSize(new Dimension(tf1.getMaximumSize().width, 20));
@@ -77,6 +87,8 @@ public class Report {
         ta = new JTextArea(20, 30);
         ta.setFont(font);
         submitBtn = new JButton("Submit");
+        addBtn = new JButton("Add Image");
+        addBtn.addActionListener(this);
 
         p1 = new JPanel();
         p2 = new JPanel();
@@ -90,6 +102,7 @@ public class Report {
         b3 = Box.createVerticalBox();
         b4 = Box.createVerticalBox();
         b5 = Box.createVerticalBox();
+//        b6 = Box.createVerticalBox();
         p8 = new JPanel();
         p9 = new JPanel();
         p10 = new JPanel();
@@ -102,7 +115,7 @@ public class Report {
         p6.setLayout(new GridLayout(1, 2));
 //        p7.setLayout(new BoxLayout(p7, BoxLayout.Y_AXIS));
 //        p8.setLayout(new BorderLayout());
-//        p9.setLayout(new BorderLayout());
+        p9.setLayout(new BorderLayout());
 //        p10.setLayout(new BorderLayout());
 //        p11.setLayout(new BorderLayout());
         p1.setBorder(new EmptyBorder(30, 30, 30, 30));
@@ -111,6 +124,8 @@ public class Report {
         p4.setBorder(new EmptyBorder(10, 10, 10, 50));
         p5.setBorder(new EmptyBorder(10, 10, 10, 50));
         p6.setBorder(new EmptyBorder(10, 10, 10, 50));
+        p7.setBorder(new EmptyBorder(10, 10, 10, 10));
+        p9.setBorder(new EmptyBorder(20, 10, 10, 10));
 //        cb.setAlignmentY(Component.CENTER_ALIGNMENT);
 //        cb.setMaximumSize(cb.getPreferredSize());
         p2.add(lb2);
@@ -139,27 +154,46 @@ public class Report {
 
         p6.add(lb6);
         b5.add(Box.createVerticalGlue());
-        b5.add(tf3);
-        b5.add(Box.createVerticalGlue());
+        b5.add(addBtn);
+//        b5.add(Box.createVerticalGlue());
         p6.add(b5);
 
+        p7.add(submitBtn);
+
+//        p8.add(lb1);
+
+//        p1.add(p8);
         p1.add(p2);
         p1.add(p3);
         p1.add(p4);
         p1.add(p5);
         p1.add(p6);
 
+        p9.add(lb1, BorderLayout.NORTH);
+        p9.add(p1, BorderLayout.CENTER);
+        
         frame.add(menuPanel, BorderLayout.NORTH);
-        frame.add(p1, BorderLayout.CENTER);
+        frame.add(p9, BorderLayout.CENTER);
+        frame.add(p7, BorderLayout.SOUTH);
 
         frame.setVisible(true);
         frame.setSize(1024, 640);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    
+
     public static void main(String[] args) {
         new Report();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        if (ae.getSource().equals(addBtn)) {
+            JFileChooser fc = new JFileChooser();
+            fc.showOpenDialog(frame); // fr คือ ตัวแปรออปเจ็ค JFrame
+            File f = fc.getSelectedFile();
+
+        }
     }
 }
 //top, left, bottom, and right
