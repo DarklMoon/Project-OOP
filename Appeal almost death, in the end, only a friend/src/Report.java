@@ -65,6 +65,7 @@ public class Report implements ActionListener {
         lb6 = new JLabel("Image", JLabel.CENTER);
 //        lb4 = new JLabel("", JLabel.CENTER);
         cb = new JComboBox();
+        cb.addItem("---PLEASE SELECT---");
         cb.addItem("พื้นที่ชำรุด (แก้ไขทางเดิน, แก้ไขสายไฟ)");
         cb.addItem("พื้นที่ไม่ปลอดภัย (พื้นที่ไม่ปลอดภัย)");
         cb.addItem("อบายมุข (ยาเสพติด,บ่อนพนัน)");
