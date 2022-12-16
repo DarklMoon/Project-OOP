@@ -8,6 +8,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import javax.swing.border.*;
+import static javax.swing.ScrollPaneConstants.*;
 
 /**
  *
@@ -24,6 +25,7 @@ public class Report implements ActionListener {
     private JTextArea ta;
     private Box b1, b2, b3, b4, b5, b6;
     private Font font, font2;
+    private JScrollPane scroll;
     public static final Color VERY_LIGHT_RED = new Color(51, 204, 255);
 
     public Report() {
@@ -60,19 +62,20 @@ public class Report implements ActionListener {
         lb1.setFont(font2);
         lb2 = new JLabel("Complaint types", JLabel.CENTER);
         lb3 = new JLabel("Location", JLabel.CENTER);
-        lb4 = new JLabel("Date", JLabel.CENTER);
+        lb4 = new JLabel("Date (MM/DD/YYYY)", JLabel.CENTER);
         lb5 = new JLabel("Details", JLabel.CENTER);
         lb6 = new JLabel("Image", JLabel.CENTER);
 //        lb4 = new JLabel("", JLabel.CENTER);
         cb = new JComboBox();
         cb.addItem("---PLEASE SELECT---");
-        cb.addItem("พื้นที่ชำรุด (แก้ไขทางเดิน, แก้ไขสายไฟ)");
-        cb.addItem("พื้นที่ไม่ปลอดภัย (พื้นที่ไม่ปลอดภัย)");
-        cb.addItem("อบายมุข (ยาเสพติด,บ่อนพนัน)");
-        cb.addItem("ผู้กระทำผิดทางจราจร");
-        cb.addItem("สินค้าไม่ได้มาตรฐาน");
-        cb.addItem("ทุจริต/คอรัปชั่น");
-        cb.addItem("อื่น ๆ");
+        cb.addItem("Deserted area");
+        cb.addItem("Defective area");
+        cb.addItem("Illegal area");
+        cb.addItem("Mischief");
+        cb.addItem("Traffic offenders");
+        cb.addItem("Non-standard products");
+        cb.addItem("Fraud/Corruption");
+        cb.addItem("Other");
         cb.setFont(font);
         cb.setPreferredSize(new Dimension(0, 10));
         tf1 = new JTextField(30);
@@ -85,7 +88,7 @@ public class Report implements ActionListener {
         tf3 = new JTextField(30);
         tf3.setFont(font);
         tf3.setMaximumSize(new Dimension(tf1.getMaximumSize().width, 20));
-        ta = new JTextArea(20, 30);
+        ta = new JTextArea(3, 10);
         ta.setFont(font);
         submitBtn = new JButton("Submit");
         addBtn = new JButton("Add Image");
@@ -120,10 +123,10 @@ public class Report implements ActionListener {
 //        p10.setLayout(new BorderLayout());
 //        p11.setLayout(new BorderLayout());
         p1.setBorder(new EmptyBorder(30, 30, 30, 30));
-        p2.setBorder(new EmptyBorder(10, 10, 10, 50));
+        p2.setBorder(new EmptyBorder(10, 10, 0, 50));
         p3.setBorder(new EmptyBorder(10, 10, 10, 50));
         p4.setBorder(new EmptyBorder(10, 10, 10, 50));
-        p5.setBorder(new EmptyBorder(10, 10, 10, 50));
+        p5.setBorder(new EmptyBorder(0, 10, 0, 50));
         p6.setBorder(new EmptyBorder(10, 10, 10, 50));
         p7.setBorder(new EmptyBorder(10, 10, 10, 10));
         p9.setBorder(new EmptyBorder(20, 10, 10, 10));
@@ -149,7 +152,11 @@ public class Report implements ActionListener {
 
         p5.add(lb5);
         b4.add(Box.createVerticalGlue());
-        b4.add(ta);
+        
+        ta.setLineWrap(true);
+        scroll = new JScrollPane(ta);
+        scroll.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+        b4.add(scroll);
         b4.add(Box.createVerticalGlue());
         p5.add(b4);
 
@@ -196,8 +203,7 @@ public class Report implements ActionListener {
 
         }
     }
-}
-//top, left, bottom, and right
+}//top, left, bottom, and right
 //สิ่งที่ควรมีหน้า Report :
 //- เลือกประเภทร้องเรียน (ใช้ ComboBox เลือกประเภท)
 //- สถานที่ร้องเรียน (TextField)
