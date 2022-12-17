@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import javax.swing.border.*;
 import static javax.swing.ScrollPaneConstants.*;
 
@@ -48,9 +49,9 @@ public class ReportPanel extends JPanel{
 //        cb.setPreferredSize(tf1.getPreferredSize());
         tf2.setFont(font);
         tf2.setMaximumSize(new Dimension(tf1.getMaximumSize().width, 20));
-        tf3 = new JTextField(30);
+        /*tf3 = new JTextField(30);
         tf3.setFont(font);
-        tf3.setMaximumSize(new Dimension(tf1.getMaximumSize().width, 20));
+        tf3.setMaximumSize(new Dimension(tf1.getMaximumSize().width, 20));*/
         ta = new JTextArea(3, 10);
         ta.setFont(font);
         submitBtn = new JButton("Submit");
@@ -145,16 +146,23 @@ public class ReportPanel extends JPanel{
         this.add(p9, BorderLayout.CENTER);
         this.add(p7, BorderLayout.SOUTH);
     }
+    
+    public JComboBox getComboBox(){return this.cb;}
+    public JTextField getLocationTextField(){return this.tf1;}
+    public JTextField getDateTextField(){return this.tf2;}
+    public JTextArea getDetailTextArea(){return this.ta;}    
+    public JButton getImageBtn(){return this.addBtn;}
+    public JButton getSummitBtn(){return this.submitBtn;}
 
-    /*@Override
-    public void actionPerformed(ActionEvent ae) {
-        if (ae.getSource().equals(addBtn)) {
-            JFileChooser fc = new JFileChooser();
-            fc.showOpenDialog(frame); // fr คือ ตัวแปรออปเจ็ค JFrame
-            File f = fc.getSelectedFile();
-
+    public File ImageChooser(JFrame frame){
+        JFileChooser fc = new JFileChooser();
+        int returnVal = fc.showOpenDialog(frame);
+        if(returnVal == JFileChooser.APPROVE_OPTION){
+            File file = fc.getSelectedFile();
+            return file;
         }
-    }*/
+        else{return null;}
+    }
 }//top, left, bottom, and right
 //สิ่งที่ควรมีหน้า Report :
 //- เลือกประเภทร้องเรียน (ใช้ ComboBox เลือกประเภท)

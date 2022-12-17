@@ -2,7 +2,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import javax.swing.JOptionPane;
 
 public class Controller implements ActionListener, WindowListener{
@@ -42,6 +45,8 @@ public class Controller implements ActionListener, WindowListener{
         mainPage.getSettingsPanel().getAdminButton().addActionListener(this);
         regPage.getFrame().addWindowListener(this);
         loginPage.getFrame().setVisible(true);
+        mainPage.getReportPanel().getImageBtn().addActionListener(this);
+        mainPage.getReportPanel().getSummitBtn().addActionListener(this);
     }
 
     @Override
@@ -136,6 +141,54 @@ public class Controller implements ActionListener, WindowListener{
         
         if(e.getSource().equals(mainPage.getSettingsPanel().getAdminButton())){setAdmin.getFrame().setVisible(true);}
         
+        if(e.getSource().equals(mainPage.getReportPanel().getImageBtn())){
+            File file = mainPage.getReportPanel().ImageChooser(mainPage.getFrame());
+            if(file!=null){model.getReport().setImage(model.extractBytes(file));}
+        }
+        if(e.getSource().equals(mainPage.getReportPanel().getSummitBtn())){
+            byte[] image = model.getReport().getImage();
+            if(mainPage.getReportPanel().getComboBox().getSelectedItem()=="---PLEASE SELECT---"){
+                JOptionPane.showMessageDialog(mainPage.getFrame(),"Please select report type.","Missing Report Type",JOptionPane.WARNING_MESSAGE);
+            }
+            else{
+                String reportType = mainPage.getReportPanel().getComboBox().getSelectedItem().toString();
+                if(mainPage.getReportPanel().getLocationTextField().getText().equals("")){
+                    JOptionPane.showMessageDialog(mainPage.getFrame(),"Please enter location.","Missing Location",JOptionPane.WARNING_MESSAGE);
+                }
+                else{
+                    String location = mainPage.getReportPanel().getLocationTextField().getText();
+                    if(mainPage.getReportPanel().getDateTextField().getText().equals("")){
+                        JOptionPane.showMessageDialog(mainPage.getFrame(),"Please enter date.","Missing Date",JOptionPane.WARNING_MESSAGE);
+                    }
+                    else{
+                        String dateString = mainPage.getReportPanel().getDateTextField().getText();
+                        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+                        Date date = null;
+                        try{date = formatter.parse(dateString);}
+                        catch(Exception ex){JOptionPane.showMessageDialog(mainPage.getFrame(),"Please enter correct format. (Must include 0 in day and month.)","Error Format",JOptionPane.WARNING_MESSAGE);}
+                        if(date!=null){
+                            if(mainPage.getReportPanel().getDetailTextArea().getText().equals("")){
+                                JOptionPane.showMessageDialog(mainPage.getFrame(),"Please enter details.","Missing Details",JOptionPane.WARNING_MESSAGE);
+                            }
+                            else{
+                                String detail = mainPage.getReportPanel().getDetailTextArea().getText();
+                                if(image==null){
+                                    int dialogResult = JOptionPane.showConfirmDialog(mainPage.getFrame(), "You didn't upload your image, are you want to continue?","No Image Include",JOptionPane.YES_NO_OPTION);
+                                    if(dialogResult == JOptionPane.YES_OPTION){
+                                        model.setReport(new Report(reportType,location,date,detail,image,model.getAccount().getUsername()));
+                                        model.saveReportToSql();
+                                    }
+                                }
+                                else{
+                                    model.setReport(new Report(reportType,location,date,detail,image,model.getAccount().getUsername()));
+                                    model.saveReportToSql();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override public void windowOpened(WindowEvent e) {model.openDataBase();}
