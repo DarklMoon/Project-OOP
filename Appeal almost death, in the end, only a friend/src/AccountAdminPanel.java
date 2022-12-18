@@ -1,32 +1,24 @@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.JTable;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.net.URL;
-import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER;
+import java.awt.event.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.*;
+import java.net.URL;
+import java.awt.Color;
+import java.io.File;
+import javax.imageio.ImageIO;
+import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER;
 
-public class ReportTablePanel extends JPanel{
-    private JLabel title;
+public class AccountAdminPanel extends JPanel{
+    private JPanel tablePanel, profilePanel, wrapPanel;
     private JTable table;
     private JScrollPane scrollPane;
+    private JLabel picture, emailLabel, title;
     public static final Color COLOR = new Color(143,211,211);
     
-    public ReportTablePanel(){
+    public AccountAdminPanel(){
         
-        title = new JLabel("Report Table", SwingConstants.CENTER);
-        title.setFont(new Font("Verdana", Font.BOLD, 32));
-        title.setBorder(new EmptyBorder(-10,0,10,0));
-        
+        tablePanel = new JPanel(new BorderLayout());
         table = new JTable(new TableModel()){
              public String getToolTipText( MouseEvent e ){
                 int row = rowAtPoint( e.getPoint() );   
@@ -35,31 +27,53 @@ public class ReportTablePanel extends JPanel{
                 return value == null ? null : value.toString();
             }};
         
-        table.setPreferredScrollableViewportSize(new Dimension(500, 500));
+        table.setPreferredScrollableViewportSize(new Dimension(700, 5));
         table.setOpaque(true);
         table.setFillsViewportHeight(true);
         table.setBackground(COLOR);
         table.setRowHeight(50);
         table.getTableHeader().setBackground(Color.decode("#FF9B4A"));
         
-        scrollPane = new JScrollPane(table,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        
-        initColumnSize(table);
-        setStatusColumn(table, table.getColumnModel().getColumn(7));
-        scrollPane.getViewport().setBackground(COLOR);
-        
+        initColumn(table, table.getColumnModel().getColumn(7));
         //Add Button viewImage in Column 5,6
-        table.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
-        table.getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JTextField()));
+        table.getColumnModel().getColumn(6).setCellRenderer(new AccountAdminPanel.ButtonRenderer());
+        table.getColumnModel().getColumn(6).setCellEditor(new AccountAdminPanel.ButtonEditor(new JTextField()));
         
-        table.getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
-        table.getColumnModel().getColumn(5).setCellEditor(new ButtonEditor(new JTextField()));
+        table.getColumnModel().getColumn(5).setCellRenderer(new AccountAdminPanel.ButtonRenderer());
+        table.getColumnModel().getColumn(5).setCellEditor(new AccountAdminPanel.ButtonEditor(new JTextField()));
+
+        scrollPane = new JScrollPane(table,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.getViewport().setBackground(COLOR);
+        tablePanel.add(scrollPane);
+        tablePanel.setBorder(new EmptyBorder(50,20,30,20));
+        
+        ImageIcon icon = null;
+        URL imageURL = this.getClass().getResource("user.png");
+        if (imageURL != null) {
+            icon = new ImageIcon(imageURL);
+        }
+        picture = new JLabel(icon);
+        emailLabel = new JLabel("OOP@hotmail.com", SwingConstants.CENTER);
+        title = new JLabel("ADMIN", SwingConstants.CENTER);
+        title.setFont(new Font("Verdana", Font.BOLD, 32));
+        
+        profilePanel = new JPanel(new BorderLayout());
+        profilePanel.setBorder(new EmptyBorder(80,0,100,0));
+        profilePanel.add(title, BorderLayout.NORTH);
+        profilePanel.add(picture, BorderLayout.CENTER);
+        profilePanel.add(emailLabel, BorderLayout.SOUTH);
+        
+        wrapPanel = new JPanel(new BorderLayout());
+        wrapPanel.add(tablePanel, BorderLayout.EAST);
+        wrapPanel.add(profilePanel, BorderLayout.WEST);
+        wrapPanel.setBorder(new EmptyBorder(20,40,10,0));
         
         this.setLayout(new BorderLayout());
-        this.add(title, BorderLayout.NORTH);
-        this.add(scrollPane, BorderLayout.CENTER);
-        this.setBorder(new EmptyBorder(30,20,20,20));
+        this.add(wrapPanel, BorderLayout.CENTER);
+        
     }
+    
+    
     
     class ButtonRenderer extends JButton implements  TableCellRenderer{
 
@@ -70,10 +84,10 @@ public class ReportTablePanel extends JPanel{
         public Component getTableCellRendererComponent(JTable table, Object obj,
             boolean selected, boolean focused, int row, int col) {
             if(col == 5){
-                setText((obj==null) ? "":"View Detail");
+                setText((obj==null) ? "":"View");
             }
             else if(col == 6){
-                setText((obj==null) ? "":"View Image");
+                setText((obj==null) ? "":"View");
             }
             return this;
         }
@@ -110,13 +124,13 @@ public class ReportTablePanel extends JPanel{
                 clicked = true;
                 clickedDetail = true;
                 username=(obj==null) ? "":table.getModel().getValueAt(row, col-4).toString();
-                btn.setText("View Detail"); 
+                btn.setText("View"); 
             }
             else if(col == 6){
                 clicked = true;
                 clickedDetail = false;
                 username=(obj==null) ? "":table.getModel().getValueAt(row, col-5).toString();
-                btn.setText("View Image"); 
+                btn.setText("View"); 
             }
             detail=(obj==null) ? "":obj.toString();
             return btn;
@@ -199,8 +213,7 @@ public class ReportTablePanel extends JPanel{
             URL imageURL = this.getClass().getResource(path);
             if (imageURL != null) {
                 icon = new ImageIcon(imageURL);
-            }
-            
+            }     
             imageShow = new JLabel(icon);
             frame.add(imageShow);
             frame.setSize(1000,800);
@@ -211,28 +224,18 @@ public class ReportTablePanel extends JPanel{
         }
     }
     
-    private void initColumnSize(JTable table) {
-        table.getColumnModel().getColumn(2).setPreferredWidth(75);
+    private void initColumn(JTable table, TableColumn objColumn) {
+        table.getColumnModel().getColumn(1).setPreferredWidth(100);
+        table.getColumnModel().getColumn(2).setPreferredWidth(100);
         table.getColumnModel().getColumn(3).setPreferredWidth(175);
         table.getColumnModel().getColumn(5).setPreferredWidth(75);
-    }
-    
-    public void setStatusColumn(JTable table,
-                                 TableColumn statusColumn) {
-        JComboBox comboBox = new JComboBox();
-        comboBox.addItem("Pending");
-        comboBox.addItem("In progress");
-        comboBox.addItem("Failed");
-        comboBox.addItem("Complete");
         
         DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-        statusColumn.setCellEditor(new DefaultCellEditor(comboBox));
-        statusColumn.setCellRenderer(renderer);
+        objColumn.setCellRenderer(renderer);
         renderer.setHorizontalAlignment( JLabel.CENTER );
         table.getColumnModel().getColumn(0).setCellRenderer( renderer );
         table.getColumnModel().getColumn(4).setCellRenderer( renderer );
     }
-    
    
     class TableModel extends AbstractTableModel {
         private String[] columnNames = {"No.",
@@ -245,23 +248,23 @@ public class ReportTablePanel extends JPanel{
                                         "STATUS"};
         private Object[][] data = {
 	    {"1","Username01","Deserted area",
-	     "Email01@mail.com", "14/12/22","lorem...","Username01","Pending"},
+	     "Email01@mail.com", "14/12/22","lorem...","Username01","Complete"},
 	    {"2","Username02", "Defective area",
-	     "Email02@mail.com", "14/12/22","lorem...","Username02", "Pending"},
+	     "Email02@mail.com", "14/12/22","lorem...","Username02", "Failed"},
 	    {"3","Username03", "Illegal area",
-	     "Email03@mail.com", "14/12/22","lorem...","Username03", "Pending"},
+	     "Email03@mail.com", "14/12/22","lorem...","Username03", "Complete"},
 	    {"4","Username04", "Mischief",
-	     "Email04@mail.com", "14/12/22","lorem...","Username04", "Pending"},
+	     "Email04@mail.com", "14/12/22","lorem...","Username04", "Complete"},
 	    {"5","Username05", "Traffic offenders",
-	     "Email05@mail.com", "14/12/22","lorem...","Username05", "Pending"},
+	     "Email05@mail.com", "14/12/22","lorem...","Username05", "Failed"},
             {"6","Username06", "Non-standard products",
-	     "Email06@mail.com", "14/12/22","lorem...","Username06", "Pending"},
+	     "Email06@mail.com", "14/12/22","lorem...","Username06", "Failed"},
             {"7","Username07", "Fraud/Corruption",
-	     "Email07@mail.com", "14/12/22","lorem...","Username07",  "Pending"},
+	     "Email07@mail.com", "14/12/22","lorem...","Username07",  "Complete"},
             {"8","Username08", "Other",
-	     "Email08@mail.com", "14/12/22","lorem...","Username08", "Pending"},
+	     "Email08@mail.com", "14/12/22","lorem...","Username08", "Complete"},
             {"9","Username09", "Other",
-	     "Email09@mail.com", "14/12/22","lorem...","Username09", "Pending"}
+	     "Email09@mail.com", "14/12/22","lorem...","Username09", "Complete"}
         };
 
         public final Object[] longValues = {"Jane", "Kathy",
@@ -289,7 +292,7 @@ public class ReportTablePanel extends JPanel{
         }
 
         public boolean isCellEditable(int row, int col) {
-            if (col < 5) {
+            if ((col < 5) || (col == 7)){
                 return false;
             } else {
                 return true;
@@ -301,6 +304,6 @@ public class ReportTablePanel extends JPanel{
             fireTableCellUpdated(row, col);
         }
     }
+    
 }
-
 

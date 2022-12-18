@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 public class Controller implements ActionListener, WindowListener{
     private RegisterPage regPage;
     private LoginPage loginPage;
-    private MainPage mainPage;
+    private MainPageUser mainPage;
     private MainPageAdmin mainPageAdmin;
     private SetAdmin setAdmin;
     private Model model;
@@ -19,7 +19,7 @@ public class Controller implements ActionListener, WindowListener{
     public Controller(){
         regPage = new RegisterPage();
         loginPage = new LoginPage();
-        mainPage = new MainPage();
+        mainPage = new MainPageUser();
         mainPageAdmin = new MainPageAdmin();
         setAdmin = new SetAdmin();
         model = new Model();
@@ -43,6 +43,8 @@ public class Controller implements ActionListener, WindowListener{
         mainPageAdmin.getFrame().addWindowListener(this);
         mainPage.getFrame().addWindowListener(this);
         mainPage.getSettingsPanel().getAdminButton().addActionListener(this);
+        mainPage.getSettingsPanel().getExitButton().addActionListener(this);
+        mainPageAdmin.getSettingsPanel().getExitButton().addActionListener(this);
         regPage.getFrame().addWindowListener(this);
         loginPage.getFrame().setVisible(true);
         mainPage.getReportPanel().getImageBtn().addActionListener(this);
@@ -133,13 +135,18 @@ public class Controller implements ActionListener, WindowListener{
         }
         if(e.getSource().equals(mainPage.getIconButton())){mainPage.setMainPanel();}
         if(e.getSource().equals(mainPage.getReportButton())){mainPage.setReportPanel();}
+        if(e.getSource().equals(mainPage.getAccountButton())){mainPage.setAccountUserPanel();}
         if(e.getSource().equals(mainPage.getSettingsButton())){mainPage.setSettingsPanel();}
         
         if(e.getSource().equals(mainPageAdmin.getIconButton())){mainPageAdmin.setMainPanel();}
         if(e.getSource().equals(mainPageAdmin.getReportButton())){mainPageAdmin.setReportTablePanel();}
+        if(e.getSource().equals(mainPageAdmin.getAccountButton())){mainPageAdmin.setAccountAdminPanel();}
         if(e.getSource().equals(mainPageAdmin.getSettingsButton())){mainPageAdmin.setSettingsPanel();}
         
         if(e.getSource().equals(mainPage.getSettingsPanel().getAdminButton())){setAdmin.getFrame().setVisible(true);}
+        if(e.getSource().equals(mainPage.getSettingsPanel().getExitButton())){mainPage.exit();}
+        
+        if(e.getSource().equals(mainPageAdmin.getSettingsPanel().getExitButton())){mainPageAdmin.exit();}
         
         if(e.getSource().equals(mainPage.getReportPanel().getImageBtn())){
             File file = mainPage.getReportPanel().ImageChooser(mainPage.getFrame());

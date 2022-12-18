@@ -21,7 +21,7 @@ public class ReportPanel extends JPanel{
         this.setLayout(new BorderLayout());
 
         font = new Font("Tahoma", Font.PLAIN, 16);
-        font2 = new Font("Tahoma", Font.PLAIN, 20);
+        font2 = new Font("Tahoma", Font.BOLD, 25);
         lb1 = new JLabel("Please fill out the complaint form", JLabel.CENTER);
         lb1.setFont(font2);
         lb2 = new JLabel("Complaint types", JLabel.CENTER);

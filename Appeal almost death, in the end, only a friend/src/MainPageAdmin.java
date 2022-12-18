@@ -8,8 +8,9 @@ public class MainPageAdmin {
     private JFrame frame;
     private JPanel menuPanel;
     private JButton iconBtn, reportBtn, accountBtn, settingBtn;
-    private ReportTablePanel reportTable;
     private ChartsAdminPanel chartAdminPanel;
+    private ReportTablePanel reportTable;
+    private AccountAdminPanel accountAdmin;
     private SettingsPanel settingsPanel;
     
     public MainPageAdmin(){
@@ -18,6 +19,7 @@ public class MainPageAdmin {
         
         chartAdminPanel = new ChartsAdminPanel();
         reportTable = new ReportTablePanel();
+        accountAdmin = new AccountAdminPanel();
         settingsPanel = new SettingsPanel();
                 
         menuPanel = new JPanel();
@@ -61,29 +63,46 @@ public class MainPageAdmin {
     public JButton getReportButton(){return this.reportBtn;}
     public JButton getAccountButton(){return this.accountBtn;}
     public JButton getSettingsButton(){return this.settingBtn;}
-    
-    public void setReportTablePanel(){
-        frame.add(reportTable, BorderLayout.CENTER);
-        reportTable.setVisible(true);
-        chartAdminPanel.setVisible(false);
-        settingsPanel.setVisible(false);
-        frame.revalidate();
-    }
-    
-    public void setSettingsPanel(){
-        frame.add(settingsPanel, BorderLayout.CENTER);
-        settingsPanel.setVisible(true);
-        chartAdminPanel.setVisible(false);
-        reportTable.setVisible(false);
-        frame.revalidate();
-    }
-    
+      
     public void setMainPanel(){
         reportTable.setVisible(false);
+        accountAdmin.setVisible(false);
         settingsPanel.setVisible(false);
         chartAdminPanel.setVisible(true);
         frame.revalidate();
     }
     
+    public void setReportTablePanel(){
+        frame.add(reportTable, BorderLayout.CENTER);
+        reportTable.setVisible(true);
+        chartAdminPanel.setVisible(false);
+        accountAdmin.setVisible(false);
+        settingsPanel.setVisible(false);
+        frame.revalidate();
+    }
+    
+    public void setAccountAdminPanel(){
+        frame.add(accountAdmin, BorderLayout.CENTER);
+        accountAdmin.setVisible(true);
+        reportTable.setVisible(false);
+        chartAdminPanel.setVisible(false);
+        settingsPanel.setVisible(false);
+        frame.revalidate();
+    } 
+        
+    public void setSettingsPanel(){
+        frame.add(settingsPanel, BorderLayout.CENTER);
+        settingsPanel.setVisible(true);
+        chartAdminPanel.setVisible(false);
+        reportTable.setVisible(false);
+        accountAdmin.setVisible(false);
+        frame.revalidate();
+    }
+    
+    public void exit(){
+        System.exit(0);
+    }
+    
+    public SettingsPanel getSettingsPanel(){return this.settingsPanel;}
 }
     
