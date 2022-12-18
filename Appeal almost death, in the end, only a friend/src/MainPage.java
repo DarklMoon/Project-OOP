@@ -10,7 +10,7 @@ public class MainPage {
     private JButton iconBtn, reportBtn, accountBtn, settingsBtn;
     private SettingsPanel settingsPanel;
     private ChartsPanel chartPanel;
-
+    private ReportPanel reportPanel;
 
     public MainPage(){
         frame = new JFrame("Call Sing");
@@ -18,6 +18,7 @@ public class MainPage {
         
         settingsPanel = new SettingsPanel();
         chartPanel = new ChartsPanel();
+        reportPanel = new ReportPanel();
         
         menuPanel = new JPanel();
         menuPanel.setLayout(new GridLayout(1,4));
@@ -43,9 +44,6 @@ public class MainPage {
         settingsBtn.setOpaque(true);
         menuPanel.add(settingsBtn);
         
-        chartPanel.setVisible(true);
-        settingsPanel.setVisible(false);
-        
         frame.add(menuPanel, BorderLayout.NORTH);
         frame.add(chartPanel, BorderLayout.CENTER);
         
@@ -66,13 +64,26 @@ public class MainPage {
         frame.add(settingsPanel, BorderLayout.CENTER);
         settingsPanel.setVisible(true);
         chartPanel.setVisible(false);
+        reportPanel.setVisible(false);
         frame.revalidate();
     }
     
     public void setMainPanel(){
         settingsPanel.setVisible(false);
         chartPanel.setVisible(true);
+        reportPanel.setVisible(false);
         frame.revalidate();
     }
+    
+    public void setReportPanel(){
+        frame.add(reportPanel, BorderLayout.CENTER);
+        settingsPanel.setVisible(false);
+        chartPanel.setVisible(false);
+        reportPanel.setVisible(true);
+        frame.revalidate();
+    }
+    
+    public SettingsPanel getSettingsPanel(){return this.settingsPanel;}
+    public ReportPanel getReportPanel(){return this.reportPanel;}
 }
     
