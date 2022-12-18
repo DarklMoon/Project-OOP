@@ -7,7 +7,10 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.*;
 
@@ -19,179 +22,243 @@ public class ReportTablePanel extends JPanel{
     private Object selectedColumn = null;
     private boolean DEBUG = false;
     public static final Color COLOR = new Color(143,211,211);
-//    DefaultRowSorter<TableModel, String> sorter;
     
     public ReportTablePanel(){
         
         title = new JLabel("Report Table", SwingConstants.CENTER);
-        title.setFont(new Font("Verdana", Font.PLAIN, 32));
+        title.setFont(new Font("Verdana", Font.BOLD, 32));
         title.setBorder(new EmptyBorder(-10,0,10,0));
 
-        table = new JTable(new TableModel());
+        table = new JTable(new TableModel()){
+             public String getToolTipText( MouseEvent e ){
+                int row = rowAtPoint( e.getPoint() );   
+                int column = columnAtPoint( e.getPoint() );
+                Object value = getValueAt(row, column);
+                return value == null ? null : value.toString();
+            }};
         
         table.setPreferredScrollableViewportSize(new Dimension(500, 500));
         table.setOpaque(true);
         table.setFillsViewportHeight(true);
         table.setBackground(COLOR);
         table.setRowHeight(50);
+        table.getTableHeader().setBackground(Color.decode("#FF9B4A"));
         
-        //setting Header -> add Color
-        header = table.getTableHeader();
-        header.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                JTableHeader h = (JTableHeader) e.getSource();
-                int i = h.columnAtPoint(e.getPoint());
-                Object o = h.getColumnModel().getColumn(i).getHeaderValue();
-                if (i < 0f) {
-                    selectedColumn = null;
-                    return;
-                }
-                selectedColumn = o;
-                h.requestFocusInWindow();
-            }
-        });
-        TableCellRenderer hr = table.getTableHeader().getDefaultRenderer();
-        header.setDefaultRenderer(new TableCellRenderer() {
-            private JLabel lbl;
-            @Override
-            public Component getTableCellRendererComponent(
-                    JTable table, Object value, boolean isSelected, boolean hasFocus, 
-                    int row, int column) {
-                if (selectedColumn == value) {
-                    lbl = (JLabel) hr.getTableCellRendererComponent(table, value, 
-                            true, true, row, column);
-                    lbl.setBorder(BorderFactory.createCompoundBorder(
-                            BorderFactory.createEmptyBorder(1, 1, 1, 1), 
-                            BorderFactory.createLineBorder(Color.red, 1)));
-                    lbl.setHorizontalAlignment(SwingConstants.LEFT);
-                    lbl.setBackground(lbl.getBackground());
-                } else {
-                    lbl = (JLabel) hr.getTableCellRendererComponent(table, value, 
-                            false, false, row, column);
-                    lbl.setBorder(BorderFactory.createCompoundBorder(
-                            lbl.getBorder(), 
-                            BorderFactory.createEmptyBorder(1, 1, 1, 1)));
-                    lbl.setHorizontalAlignment(SwingConstants.CENTER);
-                    lbl.setBackground(Color.ORANGE);
-                }
-                if (column == 5) {
-                    lbl.setForeground(Color.red);
-                } else {
-                    lbl.setForeground(header.getForeground());
-                }
-                return lbl;
-            }
-        });
+        scrollPane = new JScrollPane(table,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         
-//        TableRowSorter<TableModel> trs = (TableRowSorter<TableModel>) this.getRowSorter();
-//        sorter = (DefaultRowSorter<TableModel, String>)table.getRowSorter();
-//        for (int i=0 ; i<table.getColumnCount() ; i++) {
-//            sorter.setSortable(i, false);
-//        }
-        
-        scrollPane = new JScrollPane(table);
-        
-        initColumnSizes(table);
-        setUpSportColumn(table, table.getColumnModel().getColumn(5));
+        initColumnSize(table);
+        setStatusColumn(table, table.getColumnModel().getColumn(7));
         scrollPane.getViewport().setBackground(COLOR);
+        
+        //Add Button viewImage in Column 5,6
+        table.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
+        table.getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JTextField()));
+        
+        table.getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
+        table.getColumnModel().getColumn(5).setCellEditor(new ButtonEditor(new JTextField()));
+        
         this.setLayout(new BorderLayout());
         this.add(title, BorderLayout.NORTH);
         this.add(scrollPane, BorderLayout.CENTER);
         this.setBorder(new EmptyBorder(30,20,20,20));
     }
     
-//    public static void main(String[] args) {
-//        new ReportTablePanel();
-//    }
-    
-    private void initColumnSizes(JTable table) {
-        TableModel model = (TableModel)table.getModel();
-        TableColumn column = null;
-        Component comp = null;
-        int headerWidth = 0;
-        int cellWidth = 0;
-        Object[] longValues = model.longValues;
-        TableCellRenderer headerRenderer =
-            table.getTableHeader().getDefaultRenderer();
+    class ButtonRenderer extends JButton implements  TableCellRenderer{
 
-        for (int i = 0; i < 5; i++) {
-            column = table.getColumnModel().getColumn(i);
-
-            comp = headerRenderer.getTableCellRendererComponent(
-                                 null, column.getHeaderValue(),
-                                 false, false, 0, 0);
-            headerWidth = comp.getPreferredSize().width;
-
-            comp = table.getDefaultRenderer(model.getColumnClass(i)).
-                             getTableCellRendererComponent(
-                                 table, longValues[i],
-                                 false, false, 0, i);
-            cellWidth = comp.getPreferredSize().width;
-
-            if (DEBUG) {
-                System.out.println("Initializing width of column "
-                                   + i + ". "
-                                   + "headerWidth = " + headerWidth
-                                   + "; cellWidth = " + cellWidth);
-            }
-
-            column.setPreferredWidth(Math.max(headerWidth, cellWidth));
+        public ButtonRenderer() {
+            setOpaque(true);
         }
-        table.getColumnModel().getColumn(1).setPreferredWidth(75);
-        table.getColumnModel().getColumn(2).setPreferredWidth(125);
-        table.getColumnModel().getColumn(4).setPreferredWidth(200);
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object obj,
+            boolean selected, boolean focused, int row, int col) {
+            if(col == 5){
+                setText((obj==null) ? "":"View Detail");
+            }
+            else if(col == 6){
+                setText((obj==null) ? "":"View Image");
+            }
+            return this;
+        }
+    }
+
+    class ButtonEditor extends DefaultCellEditor{
+        protected JButton btn;
+        private String detail, pathImage, location, username;
+        private Boolean clicked, clickedDetail;
+        private JFrame frame;
+        private JPanel locationPanel, detailPanel;
+        private JLabel imageShow, locationLabel, detailLabel;
+        private JScrollPane locationScrollPane, detailScrollPane;
+        private JTextArea detailArea, locationArea;
+
+        public ButtonEditor(JTextField txt) {
+        super(txt);
+
+        btn=new JButton();
+        btn.setOpaque(true);
+
+        btn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fireEditingStopped();
+            }
+            });
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object obj,
+            boolean selected, int row, int col) {
+            if(col == 5){
+                clicked = true;
+                clickedDetail = true;
+                username=(obj==null) ? "":table.getModel().getValueAt(row, col-4).toString();
+                btn.setText("View Detail"); 
+            }
+            else if(col == 6){
+                clicked = true;
+                clickedDetail = false;
+                username=(obj==null) ? "":table.getModel().getValueAt(row, col-5).toString();
+                btn.setText("View Image"); 
+            }
+            detail=(obj==null) ? "":obj.toString();
+            System.out.println(username + " " + location + " " + detail);
+            return btn;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            if((clicked == true)&&(clickedDetail == false)){
+                pathImage = "C:\\Users\\phuri\\OneDrive\\เอกสาร\\NetBeansProjects\\Test00\\src\\pic.jpg";
+                viewImage(username, pathImage);
+            }
+            else if((clicked == true)&&(clickedDetail == true)){
+                location = "Location0123456789";
+                viewDetail(username,location, detail);
+            }
+            
+            clicked=false;
+            clickedDetail=false;
+            return new String(username);
+        }
+
+        @Override
+        public boolean stopCellEditing() {
+            clicked=false;
+            return super.stopCellEditing();
+        }
+
+        @Override
+        protected void fireEditingStopped() {
+            super.fireEditingStopped();
+        }
+  
+        public void viewDetail(String username, String location, String detail){
+            frame = new JFrame("Detail User: " + username);
+            scrollPane = new JScrollPane();
+            locationLabel = new JLabel("Location");
+            locationArea = new JTextArea(location,5,5);
+            detailLabel = new JLabel("Detail");
+            detailArea = new JTextArea(detail,10,30);
+            locationPanel = new JPanel();
+            detailPanel = new JPanel();
+            
+            locationLabel.setFont(new Font("Verdana", Font.BOLD, 20));
+            detailLabel.setFont(new Font("Verdana", Font.BOLD, 20));
+            locationArea.setFont(new Font("Verdana", Font.PLAIN, 14));
+            detailArea.setFont(new Font("Verdana", Font.PLAIN, 14));
+            locationArea.setEditable(false);
+            detailArea.setEditable(false);
+            locationArea.setLineWrap(true);
+            detailArea.setLineWrap(true);
+            locationPanel.setLayout(new BorderLayout());
+            detailPanel.setLayout(new BorderLayout());
+            
+            locationScrollPane = new JScrollPane(locationArea);
+            locationScrollPane.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+            detailScrollPane = new JScrollPane(detailArea);
+            detailScrollPane.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+                        
+            locationPanel.add(locationLabel, BorderLayout.NORTH);
+            locationPanel.add(locationScrollPane, BorderLayout.CENTER);
+            locationPanel.setBorder(new EmptyBorder(10,40,10,40));
+            
+            detailPanel.add(detailLabel, BorderLayout.NORTH);
+            detailPanel.add(detailScrollPane, BorderLayout.CENTER);
+            detailPanel.setBorder(new EmptyBorder(0,40,20,40));
+            
+            frame.setLayout(new BorderLayout());
+            frame.add(locationPanel, BorderLayout.NORTH);
+            frame.add(detailPanel, BorderLayout.CENTER);
+                        
+            frame.setSize(500,500);
+            frame.setLocationRelativeTo(null);
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setVisible(true);
+        }
         
-        
+        public void viewImage(String image, String path){
+            frame = new JFrame("Image User: " + image);
+            imageShow = new JLabel();
+            frame.add(new JLabel(new ImageIcon(path)));
+            frame.setSize(1000,800);
+            frame.setLocationRelativeTo(null);
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setVisible(true);
+            System.out.println(image);
+        }
     }
     
-    public void setUpSportColumn(JTable table,
-                                 TableColumn sportColumn) {
+    private void initColumnSize(JTable table) {
+        table.getColumnModel().getColumn(2).setPreferredWidth(75);
+        table.getColumnModel().getColumn(3).setPreferredWidth(175);
+        table.getColumnModel().getColumn(5).setPreferredWidth(75);
+    }
+    
+    public void setStatusColumn(JTable table,
+                                 TableColumn statusColumn) {
         JComboBox comboBox = new JComboBox();
         comboBox.addItem("Pending");
         comboBox.addItem("In progress");
+        comboBox.addItem("Failed");
         comboBox.addItem("Complete");
         
-        sportColumn.setCellEditor(new DefaultCellEditor(comboBox));
-
-        DefaultTableCellRenderer renderer =
-                new DefaultTableCellRenderer();
-        renderer.setToolTipText("Click for combo box");
-        sportColumn.setCellRenderer(renderer);
-        
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+        statusColumn.setCellEditor(new DefaultCellEditor(comboBox));
+        statusColumn.setCellRenderer(renderer);
         renderer.setHorizontalAlignment( JLabel.CENTER );
         table.getColumnModel().getColumn(0).setCellRenderer( renderer );
-        table.getColumnModel().getColumn(3).setCellRenderer( renderer );
-        
+        table.getColumnModel().getColumn(4).setCellRenderer( renderer );
     }
     
-    
+   
     class TableModel extends AbstractTableModel {
         private String[] columnNames = {"No.",
+                                        "USERNAME",
                                         "TYPE",
-                                        "LOCATION",
+                                        "EMAIL",
                                         "DATE",
                                         "DETAIL",
+                                        "IMAGES",
                                         "STATUS"};
         private Object[][] data = {
-	    {"1", "Deserted area",
-	     "Snowboarding", "14/12/22","lorem...","Pending"},
-	    {"2", "Defective area",
-	     "Rowing", "14/12/22","lorem...", "Pending"},
-	    {"3", "Illegal area",
-	     "Knitting", "14/12/22","lorem...", "Pending"},
-	    {"4", "Mischief",
-	     "Speed reading", "14/12/22","lorem...", "Pending"},
-	    {"5", "Traffic offenders",
-	     "Pool", "14/12/22","lorem...", "Pending"},
-            {"6", "Non-standard products",
-	     "Pool", "14/12/22","lorem...", "Pending"},
-            {"7", "Fraud/Corruption",
-	     "Pool", "14/12/22","lorem...",  "Pending"},
-            {"8", "Other",
-	     "Pool", "14/12/22","lorem...", "Pending"},
-            {"9", "Other",
-	     "Pool", "14/12/22","lorem...", "Pending"}
+	    {"1","Username01","Deserted area",
+	     "Email01@mail.com", "14/12/22","lorem...","Username01","Pending"},
+	    {"2","Username02", "Defective area",
+	     "Email02@mail.com", "14/12/22","lorem...","Username02", "Pending"},
+	    {"3","Username03", "Illegal area",
+	     "Email03@mail.com", "14/12/22","lorem...","Username03", "Pending"},
+	    {"4","Username04", "Mischief",
+	     "Email04@mail.com", "14/12/22","lorem...","Username04", "Pending"},
+	    {"5","Username05", "Traffic offenders",
+	     "Email05@mail.com", "14/12/22","lorem...","Username05", "Pending"},
+            {"6","Username06", "Non-standard products",
+	     "Email06@mail.com", "14/12/22","lorem...","Username06", "Pending"},
+            {"7","Username07", "Fraud/Corruption",
+	     "Email07@mail.com", "14/12/22","lorem...","Username07",  "Pending"},
+            {"8","Username08", "Other",
+	     "Email08@mail.com", "14/12/22","lorem...","Username08", "Pending"},
+            {"9","Username09", "Other",
+	     "Email09@mail.com", "14/12/22","lorem...","Username09", "Pending"}
         };
 
         public final Object[] longValues = {"Jane", "Kathy",
