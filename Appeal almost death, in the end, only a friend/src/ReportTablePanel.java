@@ -55,6 +55,8 @@ public class ReportTablePanel extends JPanel{
         table.getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
         table.getColumnModel().getColumn(5).setCellEditor(new ButtonEditor(new JTextField()));
         
+        table.setAutoCreateRowSorter(true);
+        
         this.setLayout(new BorderLayout());
         this.add(title, BorderLayout.NORTH);
         this.add(scrollPane, BorderLayout.CENTER);
