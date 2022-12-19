@@ -49,6 +49,7 @@ public class Controller implements ActionListener, WindowListener{
         loginPage.getFrame().setVisible(true);
         mainPage.getReportPanel().getImageBtn().addActionListener(this);
         mainPage.getReportPanel().getSummitBtn().addActionListener(this);
+        setAdmin.getButton().addActionListener(this);
     }
 
     @Override
@@ -135,7 +136,11 @@ public class Controller implements ActionListener, WindowListener{
         }
         if(e.getSource().equals(mainPage.getIconButton())){mainPage.setMainPanel();}
         if(e.getSource().equals(mainPage.getReportButton())){mainPage.setReportPanel();}
-        if(e.getSource().equals(mainPage.getAccountButton())){mainPage.setAccountUserPanel();}
+        if(e.getSource().equals(mainPage.getAccountButton())){
+            mainPage.setAccountUserPanel();
+            mainPage.getAccountUser().getTitle().setText(model.getAccount().getUsername());
+            mainPage.getAccountUser().getEmail().setText(model.getAccount().getEmail());
+        }
         if(e.getSource().equals(mainPage.getSettingsButton())){mainPage.setSettingsPanel();}
         
         if(e.getSource().equals(mainPageAdmin.getIconButton())){mainPageAdmin.setMainPanel();}
@@ -194,6 +199,17 @@ public class Controller implements ActionListener, WindowListener{
                         }
                     }
                 }
+            }
+        }
+        if(e.getSource().equals(setAdmin.getButton())){
+            if(model.setAdmin(String.valueOf(setAdmin.getPasswordField().getPassword()))){
+                model.changeToAdmin();
+                JOptionPane.showMessageDialog(mainPage.getFrame(),"Change to admin successfully. Please re-login.","Admin verified",JOptionPane.INFORMATION_MESSAGE);
+                mainPage.getFrame().setVisible(false);
+                loginPage.getFrame().setVisible(true);
+            }
+            else{
+                JOptionPane.showMessageDialog(mainPage.getFrame(),"Admin password not match. Please try again.","Incorrect Password",JOptionPane.ERROR_MESSAGE);
             }
         }
     }

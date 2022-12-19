@@ -5,8 +5,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.*;
 import java.net.URL;
 import java.awt.Color;
-import java.io.File;
-import javax.imageio.ImageIO;
 import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER;
 
 public class AccountUserPanel extends JPanel {
@@ -301,6 +299,7 @@ public class AccountUserPanel extends JPanel {
             fireTableCellUpdated(row, col);
         }
     }
-    
+    public JLabel getTitle(){return this.title;}
+    public JLabel getEmail(){return this.emailLabel;}
 }
 

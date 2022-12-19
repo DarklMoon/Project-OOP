@@ -38,4 +38,6 @@ public class SetAdmin {
     }
     
     public JFrame getFrame(){return this.frame;}
+    public JButton getButton(){return this.button;}
+    public JPasswordField getPasswordField(){return this.passField;}
 }

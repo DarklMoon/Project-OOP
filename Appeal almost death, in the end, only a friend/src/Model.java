@@ -2,11 +2,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.sql.*;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -68,6 +64,16 @@ public class Model {
                         + "username varchar(50) not null,"
                         + "primary key (ID)"
                         + ");";
+                s.execute(sql);
+            }
+            tables = dbm.getTables(null, null, "adminPassword", null);
+            if (!tables.next()){
+                sql = 
+                        "create table adminPassword("
+                        + "password varchar(50) not null"
+                        + ");";
+                s.execute(sql);
+                sql = "insert into adminPassword (password) value('admin');";
                 s.execute(sql);
             }
         } 
@@ -140,6 +146,32 @@ public class Model {
             String sql = "INSERT INTO account (firstname,lastname,username,email,password,admin)"
                     + " VALUES ("+"'"+firstname+"'"+","+"'"+lastname+"'"+","+"'"+username+"'"+","+"'"+email+"'"+","+"'"+password+"'"+",0);";
             int n = s.executeUpdate(sql);
+        } 
+        catch (SQLException e) {e.printStackTrace();}
+    }
+    
+    public boolean setAdmin(String password){
+        try {
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql",this.sqlUsername,this.sqlPassword);
+            s = connect.createStatement();
+            String sql = "select * from adminPassword";
+            ResultSet rs = s.executeQuery(sql);
+            if(rs.next()){return password.equals(rs.getString("password"));}
+            else{return false;}
+        } 
+        catch (SQLException e) {e.printStackTrace(); return false;}
+    }
+    
+    public void changeToAdmin(){
+        try {
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql",this.sqlUsername,this.sqlPassword);
+            s = connect.createStatement();
+            String sql = "select * from account where username = "+account.getUsername()+";";
+            ResultSet rs = s.executeQuery(sql);
+            if(rs.next()){
+                sql = "update account set admin = true where username = '"+account.getUsername()+"';";
+                s.executeUpdate(sql);
+            }
         } 
         catch (SQLException e) {e.printStackTrace();}
     }
