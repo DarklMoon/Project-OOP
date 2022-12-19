@@ -205,6 +205,7 @@ public class Controller implements ActionListener, WindowListener{
             if(model.setAdmin(String.valueOf(setAdmin.getPasswordField().getPassword()))){
                 model.changeToAdmin();
                 JOptionPane.showMessageDialog(mainPage.getFrame(),"Change to admin successfully. Please re-login.","Admin verified",JOptionPane.INFORMATION_MESSAGE);
+                setAdmin.getFrame().setVisible(false);
                 mainPage.getFrame().setVisible(false);
                 loginPage.getFrame().setVisible(true);
             }

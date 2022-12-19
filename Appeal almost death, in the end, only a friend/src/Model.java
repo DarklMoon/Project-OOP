@@ -166,7 +166,7 @@ public class Model {
         try {
             connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql",this.sqlUsername,this.sqlPassword);
             s = connect.createStatement();
-            String sql = "select * from account where username = "+account.getUsername()+";";
+            String sql = "select * from account where username = '"+account.getUsername()+"';";
             ResultSet rs = s.executeQuery(sql);
             if(rs.next()){
                 sql = "update account set admin = true where username = '"+account.getUsername()+"';";
