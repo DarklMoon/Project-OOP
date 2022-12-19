@@ -4,23 +4,23 @@ import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.*;
 
-public class MainPageAdmin {
+public class MainAdminPage {
     private JFrame frame;
     private JPanel menuPanel;
     private JButton iconBtn, reportBtn, accountBtn, settingBtn;
     private ChartsAdminPanel chartAdminPanel;
     private ReportTablePanel reportTable;
     private AccountAdminPanel accountAdmin;
-    private SettingsPanel settingsPanel;
+    private SettingsAdminPanel settingsPanel;
     
-    public MainPageAdmin(){
+    public MainAdminPage(){
         frame = new JFrame("Call Sing [Admin]");
         frame.setLayout(new BorderLayout());
         
         chartAdminPanel = new ChartsAdminPanel();
         reportTable = new ReportTablePanel();
         accountAdmin = new AccountAdminPanel();
-        settingsPanel = new SettingsPanel();
+        settingsPanel = new SettingsAdminPanel();
                 
         menuPanel = new JPanel();
         menuPanel.setLayout(new GridLayout(1,4));
@@ -53,6 +53,7 @@ public class MainPageAdmin {
         
         frame.setVisible(false); //set true for display
         frame.setSize(1024,640);
+        frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -103,6 +104,7 @@ public class MainPageAdmin {
         System.exit(0);
     }
     
-    public SettingsPanel getSettingsPanel(){return this.settingsPanel;}
+    public ChartsAdminPanel getChartsPanel(){return this.chartAdminPanel;}
+    public SettingsAdminPanel getSettingsPanel(){return this.settingsPanel;}
 }
     

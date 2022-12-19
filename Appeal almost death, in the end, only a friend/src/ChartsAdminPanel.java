@@ -15,17 +15,10 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 public class ChartsAdminPanel extends JPanel{
     public static final Color COLOR = new Color(164,91,170);
+    private DefaultCategoryDataset dataset;
     
     public ChartsAdminPanel(){
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        dataset.setValue(80, "Marks", "Deserted area");
-        dataset.setValue(50, "Marks", "Defective area");
-        dataset.setValue(75, "Marks", "Illegal area");
-        dataset.setValue(95, "Marks", "Mischief");
-        dataset.setValue(10, "Marks", "Traffic offenders");
-        dataset.setValue(45, "Marks", "Non-standard products");
-        dataset.setValue(35, "Marks", "Fraud/Corruption");
-        dataset.setValue(70, "Marks", "Other");
+        dataset = new DefaultCategoryDataset();
         JFreeChart chart = ChartFactory.createBarChart3D("Graph Showing Number of Complaints", "Type of Complaints", "Number of Complaints", dataset, PlotOrientation.VERTICAL, false, true, false);
         chart.setBackgroundPaint(Color.WHITE);
         chart.getTitle().setPaint(Color.BLACK); 
@@ -51,5 +44,7 @@ public class ChartsAdminPanel extends JPanel{
         this.setBorder(new EmptyBorder(20,0,0,0));
         this.add(cp,BorderLayout.CENTER);
         this.validate();
-}
     }
+    
+    public DefaultCategoryDataset getDataset(){return this.dataset;}
+}

@@ -8,18 +8,21 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.imageio.ImageIO;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 public class Model {
     private Account account;
     private Report report;
+    private TypeAmount type;
     private Connection connect = null;
     private Statement s = null;
     private String sqlUsername = "root";
     private String sqlPassword = "";
     
     public Model(){
-        account = new Account();
-        report = new Report();
+        this.account = new Account();
+        this.report = new Report();
+        this.type = new TypeAmount();
     }
     
     public Account getAccount(){return this.account;}
@@ -134,6 +137,10 @@ public class Model {
         catch (SQLException e) {e.printStackTrace();}
     }
     
+    public void logout(){
+        this.account = new Account();
+    }
+    
     public void creatAccount(){
         try {
             connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql",this.sqlUsername,this.sqlPassword);
@@ -145,7 +152,7 @@ public class Model {
             String password = account.getPassword();
             String sql = "INSERT INTO account (firstname,lastname,username,email,password,admin)"
                     + " VALUES ("+"'"+firstname+"'"+","+"'"+lastname+"'"+","+"'"+username+"'"+","+"'"+email+"'"+","+"'"+password+"'"+",0);";
-            int n = s.executeUpdate(sql);
+            s.executeUpdate(sql);
         } 
         catch (SQLException e) {e.printStackTrace();}
     }
@@ -204,5 +211,76 @@ public class Model {
             s.executeUpdate();
         } 
         catch (SQLException e) {e.printStackTrace();}
+    }
+    
+    public void getType(){
+        try {
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql",this.sqlUsername,this.sqlPassword);
+            s = connect.createStatement();
+            String sql = "select count(*) as dsa from report where type = 'Deserted area';";
+            ResultSet rs = s.executeQuery(sql);
+            rs.next();
+            int dsa = rs.getInt("dsa");
+            
+            sql = "select count(*) as dfa from report where type = 'Defective area';";
+            rs = s.executeQuery(sql);
+            rs.next();
+            int dfa = rs.getInt("dfa");
+            
+            sql = "select count(*) as iga from report where type = 'Illegal area';";
+            rs = s.executeQuery(sql);
+            rs.next();
+            int iga = rs.getInt("iga");
+            
+            sql = "select count(*) as mis from report where type = 'Mischief';";
+            rs = s.executeQuery(sql);
+            rs.next();
+            int mis = rs.getInt("mis");
+            
+            sql = "select count(*) as tfo from report where type = 'Traffic offenders';";
+            rs = s.executeQuery(sql);
+            rs.next();
+            int tfo = rs.getInt("tfo");
+            
+            sql = "select count(*) as nsp from report where type = 'Non-standard products';";
+            rs = s.executeQuery(sql);
+            rs.next();
+            int nsp = rs.getInt("nsp");
+            
+            sql = "select count(*) as frd from report where type = 'Fraud/Corruption';";
+            rs = s.executeQuery(sql);
+            rs.next();
+            int frd = rs.getInt("frd");
+            
+            sql = "select count(*) as oth from report where type = 'Other';";
+            rs = s.executeQuery(sql);
+            rs.next();
+            int oth = rs.getInt("oth");
+            
+            type = new TypeAmount(dsa,dfa,iga,mis,tfo,nsp,frd,oth);
+        } 
+        catch (SQLException e) {e.printStackTrace();}
+    }
+    
+    public void setChart(DefaultCategoryDataset dataset){
+        dataset.setValue(type.getDSA(), "Marks", "Deserted area");
+        dataset.setValue(type.getDFA(), "Marks", "Defective area");
+        dataset.setValue(type.getIGA(), "Marks", "Illegal area");
+        dataset.setValue(type.getMIS(), "Marks", "Mischief");
+        dataset.setValue(type.getTFO(), "Marks", "Traffic offenders");
+        dataset.setValue(type.getNSP(), "Marks", "Non-standard products");
+        dataset.setValue(type.getFRD(), "Marks", "Fraud/Corruption");
+        dataset.setValue(type.getOTH(), "Marks", "Other");
+    }
+    
+    public boolean setAdminPassword(String password){
+        try {
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql",this.sqlUsername,this.sqlPassword);
+            s = connect.createStatement();
+            String sql = "update adminPassword set password = '"+password+"';";
+            s.executeUpdate(sql);
+            return true;
+        } 
+        catch (SQLException e) {e.printStackTrace(); return false;}
     }
 }

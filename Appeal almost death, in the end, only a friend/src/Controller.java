@@ -12,16 +12,18 @@ public class Controller implements ActionListener, WindowListener{
     private RegisterPage regPage;
     private LoginPage loginPage;
     private MainPageUser mainPage;
-    private MainPageAdmin mainPageAdmin;
+    private MainAdminPage mainAdminPage;
     private SetAdmin setAdmin;
+    private SetAdminPassword setAdminPassword;
     private Model model;
     
     public Controller(){
         regPage = new RegisterPage();
         loginPage = new LoginPage();
         mainPage = new MainPageUser();
-        mainPageAdmin = new MainPageAdmin();
+        mainAdminPage = new MainAdminPage();
         setAdmin = new SetAdmin();
+        setAdminPassword = new SetAdminPassword();
         model = new Model();
         init();
     }
@@ -29,27 +31,40 @@ public class Controller implements ActionListener, WindowListener{
     private void init(){
         regPage.getRegBtn().addActionListener(this);
         regPage.getLoginBtn().addActionListener(this);
+        
         loginPage.getRegBtn().addActionListener(this);
         loginPage.getLoginBtn().addActionListener(this);
-        loginPage.getFrame().addWindowListener(this);
+  
         mainPage.getIconButton().addActionListener(this);
         mainPage.getReportButton().addActionListener(this);
         mainPage.getAccountButton().addActionListener(this);
         mainPage.getSettingsButton().addActionListener(this);
-        mainPageAdmin.getIconButton().addActionListener(this);
-        mainPageAdmin.getReportButton().addActionListener(this);
-        mainPageAdmin.getAccountButton().addActionListener(this);
-        mainPageAdmin.getSettingsButton().addActionListener(this);
-        mainPageAdmin.getFrame().addWindowListener(this);
-        mainPage.getFrame().addWindowListener(this);
+        
+        mainAdminPage.getIconButton().addActionListener(this);
+        mainAdminPage.getReportButton().addActionListener(this);
+        mainAdminPage.getAccountButton().addActionListener(this);
+        mainAdminPage.getSettingsButton().addActionListener(this);
+        mainAdminPage.getFrame().addWindowListener(this);
+          
         mainPage.getSettingsPanel().getAdminButton().addActionListener(this);
         mainPage.getSettingsPanel().getExitButton().addActionListener(this);
-        mainPageAdmin.getSettingsPanel().getExitButton().addActionListener(this);
-        regPage.getFrame().addWindowListener(this);
-        loginPage.getFrame().setVisible(true);
+        mainPage.getSettingsPanel().getLogoutButton().addActionListener(this);
+        
+        mainAdminPage.getSettingsPanel().getAdminButton().addActionListener(this);
+        mainAdminPage.getSettingsPanel().getExitButton().addActionListener(this);
+        mainAdminPage.getSettingsPanel().getLogoutButton().addActionListener(this);
+        
         mainPage.getReportPanel().getImageBtn().addActionListener(this);
-        mainPage.getReportPanel().getSummitBtn().addActionListener(this);
+        mainPage.getReportPanel().getSummitBtn().addActionListener(this);  
+        
         setAdmin.getButton().addActionListener(this);
+        setAdminPassword.getButton().addActionListener(this);
+        
+        mainPage.getFrame().addWindowListener(this);
+        loginPage.getFrame().addWindowListener(this);
+        regPage.getFrame().addWindowListener(this);
+        
+        loginPage.getFrame().setVisible(true);
     }
 
     @Override
@@ -69,7 +84,8 @@ public class Controller implements ActionListener, WindowListener{
                         if(model.checkPassword(username, password)==true){
                             model.login(username);
                             loginPage.getFrame().setVisible(false);
-                            if(model.getAccount().getIsAdmin()==true){mainPageAdmin.getFrame().setVisible(true);}
+                            loginPage.reset();
+                            if(model.getAccount().getIsAdmin()==true){mainAdminPage.getFrame().setVisible(true);}
                             else{mainPage.getFrame().setVisible(true);}
                         }
                         else{
@@ -84,11 +100,13 @@ public class Controller implements ActionListener, WindowListener{
         }
         if(e.getSource().equals(loginPage.getRegBtn())){
             loginPage.getFrame().setVisible(false);
+            loginPage.reset();
             regPage.getFrame().setVisible(true);
         }
         if(e.getSource().equals(regPage.getLoginBtn())){
             loginPage.getFrame().setVisible(true);
             regPage.getFrame().setVisible(false);
+            regPage.reset();
         }
         if(e.getSource().equals(regPage.getRegBtn())){
             if(regPage.getFirstnameTextField().getText().equals("")){
@@ -120,6 +138,7 @@ public class Controller implements ActionListener, WindowListener{
                                     model.setAccount(new Account(firstname,lastname,username,password,email,false));
                                     model.creatAccount();
                                     regPage.getFrame().setVisible(false);
+                                    regPage.reset();
                                     loginPage.getFrame().setVisible(true);
                                 }
                             }
@@ -134,24 +153,28 @@ public class Controller implements ActionListener, WindowListener{
                 }
             }
         }
-        if(e.getSource().equals(mainPage.getIconButton())){mainPage.setMainPanel();}
+        if(e.getSource().equals(mainPage.getIconButton())){mainPage.setMainPanel(); mainPage.getReportPanel().reset();}
         if(e.getSource().equals(mainPage.getReportButton())){mainPage.setReportPanel();}
         if(e.getSource().equals(mainPage.getAccountButton())){
             mainPage.setAccountUserPanel();
+            mainPage.getReportPanel().reset();
             mainPage.getAccountUser().getTitle().setText(model.getAccount().getUsername());
             mainPage.getAccountUser().getEmail().setText(model.getAccount().getEmail());
         }
-        if(e.getSource().equals(mainPage.getSettingsButton())){mainPage.setSettingsPanel();}
+        if(e.getSource().equals(mainPage.getSettingsButton())){mainPage.setSettingsPanel(); mainPage.getReportPanel().reset();}
         
-        if(e.getSource().equals(mainPageAdmin.getIconButton())){mainPageAdmin.setMainPanel();}
-        if(e.getSource().equals(mainPageAdmin.getReportButton())){mainPageAdmin.setReportTablePanel();}
-        if(e.getSource().equals(mainPageAdmin.getAccountButton())){mainPageAdmin.setAccountAdminPanel();}
-        if(e.getSource().equals(mainPageAdmin.getSettingsButton())){mainPageAdmin.setSettingsPanel();}
+        if(e.getSource().equals(mainAdminPage.getIconButton())){mainAdminPage.setMainPanel();}
+        if(e.getSource().equals(mainAdminPage.getReportButton())){mainAdminPage.setReportTablePanel();}
+        if(e.getSource().equals(mainAdminPage.getAccountButton())){mainAdminPage.setAccountAdminPanel();}
+        if(e.getSource().equals(mainAdminPage.getSettingsButton())){mainAdminPage.setSettingsPanel();}
         
         if(e.getSource().equals(mainPage.getSettingsPanel().getAdminButton())){setAdmin.getFrame().setVisible(true);}
         if(e.getSource().equals(mainPage.getSettingsPanel().getExitButton())){mainPage.exit();}
+        if(e.getSource().equals(mainPage.getSettingsPanel().getLogoutButton())){model.logout(); mainPage.getFrame().setVisible(false); loginPage.getFrame().setVisible(true);}
         
-        if(e.getSource().equals(mainPageAdmin.getSettingsPanel().getExitButton())){mainPageAdmin.exit();}
+        if(e.getSource().equals(mainAdminPage.getSettingsPanel().getAdminButton())){setAdminPassword.getFrame().setVisible(true);}
+        if(e.getSource().equals(mainAdminPage.getSettingsPanel().getExitButton())){mainAdminPage.exit();}
+        if(e.getSource().equals(mainAdminPage.getSettingsPanel().getLogoutButton())){model.logout(); mainAdminPage.getFrame().setVisible(false); loginPage.getFrame().setVisible(true);}
         
         if(e.getSource().equals(mainPage.getReportPanel().getImageBtn())){
             File file = mainPage.getReportPanel().ImageChooser(mainPage.getFrame());
@@ -189,11 +212,21 @@ public class Controller implements ActionListener, WindowListener{
                                     if(dialogResult == JOptionPane.YES_OPTION){
                                         model.setReport(new Report(reportType,location,date,detail,image,model.getAccount().getUsername()));
                                         model.saveReportToSql();
+                                        model.getType(); 
+                                        model.setChart(mainPage.getChartsPanel().getDataset());
+                                        model.setChart(mainAdminPage.getChartsPanel().getDataset());
+                                        JOptionPane.showMessageDialog(mainPage.getFrame(),"Report submit successfully.","Report Send",JOptionPane.INFORMATION_MESSAGE);
+                                        mainPage.getReportPanel().reset();
                                     }
                                 }
                                 else{
                                     model.setReport(new Report(reportType,location,date,detail,image,model.getAccount().getUsername()));
                                     model.saveReportToSql();
+                                    model.getType(); 
+                                    model.setChart(mainPage.getChartsPanel().getDataset());
+                                    model.setChart(mainAdminPage.getChartsPanel().getDataset());
+                                    JOptionPane.showMessageDialog(mainPage.getFrame(),"Report submit successfully.","Report Send",JOptionPane.INFORMATION_MESSAGE);
+                                    mainPage.getReportPanel().reset();
                                 }
                             }
                         }
@@ -202,20 +235,44 @@ public class Controller implements ActionListener, WindowListener{
             }
         }
         if(e.getSource().equals(setAdmin.getButton())){
-            if(model.setAdmin(String.valueOf(setAdmin.getPasswordField().getPassword()))){
-                model.changeToAdmin();
-                JOptionPane.showMessageDialog(mainPage.getFrame(),"Change to admin successfully. Please re-login.","Admin verified",JOptionPane.INFORMATION_MESSAGE);
-                setAdmin.getFrame().setVisible(false);
-                mainPage.getFrame().setVisible(false);
-                loginPage.getFrame().setVisible(true);
+            if(setAdmin.getPasswordField().getPassword().length!=0){
+                if(model.setAdmin(String.valueOf(setAdmin.getPasswordField().getPassword()))){
+                    model.changeToAdmin();
+                    JOptionPane.showMessageDialog(mainPage.getFrame(),"Change to admin successfully. Please re-login.","Admin verified",JOptionPane.INFORMATION_MESSAGE);
+                    setAdmin.resetField();
+                    setAdmin.getFrame().setVisible(false);
+                    mainPage.getFrame().setVisible(false);
+                    loginPage.getFrame().setVisible(true);
+                }
+                else{
+                    JOptionPane.showMessageDialog(mainPage.getFrame(),"Admin password not match. Please try again.","Incorrect Password",JOptionPane.ERROR_MESSAGE);
+                }
             }
             else{
-                JOptionPane.showMessageDialog(mainPage.getFrame(),"Admin password not match. Please try again.","Incorrect Password",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(mainPage.getFrame(),"Please enter admin password.","Missing Password",JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        
+        if(e.getSource().equals(setAdminPassword.getButton())){
+            if(setAdminPassword.getPasswordField().getPassword().length!=0){
+                if(model.setAdminPassword(String.valueOf(setAdminPassword.getPasswordField().getPassword()))){
+                    JOptionPane.showMessageDialog(mainPage.getFrame(),"Password change successfully.","Password Change",JOptionPane.INFORMATION_MESSAGE);
+                    setAdminPassword.resetField();
+                    setAdminPassword.getFrame().setVisible(false);
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(mainPage.getFrame(),"Please enter admin password.","Missing Password",JOptionPane.WARNING_MESSAGE);
             }
         }
     }
 
-    @Override public void windowOpened(WindowEvent e) {model.openDataBase();}
+    @Override public void windowOpened(WindowEvent e) {
+        model.openDataBase(); 
+        model.getType(); 
+        model.setChart(mainPage.getChartsPanel().getDataset());
+        model.setChart(mainAdminPage.getChartsPanel().getDataset());
+    }
     @Override public void windowClosing(WindowEvent e) {model.closeDataBase();}
     @Override public void windowClosed(WindowEvent e) {}
     @Override public void windowIconified(WindowEvent e) {}

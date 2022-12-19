@@ -8,7 +8,7 @@ import javax.swing.border.EmptyBorder;
 public class LoginPage {
     private JFrame frame;
     private JLabel usernameLabel, passLabel, loginLabel;
-    private JTextField usernameTextField, emailTextField;
+    private JTextField usernameTextField;
     private JPasswordField passField, confirmPassField;
     private JPanel panel, usernamePanel, passPanel, btnPanel;
     private JButton loginBtn, regBtn;
@@ -66,4 +66,9 @@ public class LoginPage {
     
     public JTextField getUsernameTextField(){return this.usernameTextField;}
     public JPasswordField getPasswordField(){return this.passField;}
+    
+    public void reset(){
+        this.usernameTextField.setText("");
+        this.passField.setText("");
+    }
 }
