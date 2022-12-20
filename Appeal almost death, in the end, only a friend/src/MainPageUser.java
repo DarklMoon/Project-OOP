@@ -9,7 +9,7 @@ public class MainPageUser {
     private JPanel menuPanel;
     private JButton iconBtn, reportBtn, accountBtn, settingBtn;
     private SettingsPanel settingsPanel;
-    private ChartsPanel chartPanel;
+    private ChartsPanel chartsPanel;
     private ReportPanel reportPanel;
     private AccountUserPanel accountUser;
 
@@ -18,7 +18,7 @@ public class MainPageUser {
         frame.setLayout(new BorderLayout());
         
         settingsPanel = new SettingsPanel();
-        chartPanel = new ChartsPanel();
+        chartsPanel = new ChartsPanel();
         reportPanel = new ReportPanel();
         accountUser = new AccountUserPanel();
         
@@ -47,10 +47,11 @@ public class MainPageUser {
         menuPanel.add(settingBtn);
         
         frame.add(menuPanel, BorderLayout.NORTH);
-        frame.add(chartPanel, BorderLayout.CENTER);
+        frame.add(chartsPanel, BorderLayout.CENTER);
         
         frame.setVisible(false);
         frame.setSize(1024,640);
+        frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -64,7 +65,7 @@ public class MainPageUser {
     
     public void setMainPanel(){
         settingsPanel.setVisible(false);
-        chartPanel.setVisible(true);
+        chartsPanel.setVisible(true);
         reportPanel.setVisible(false);
         accountUser.setVisible(false);
         frame.revalidate();
@@ -73,7 +74,7 @@ public class MainPageUser {
     public void setReportPanel(){
         frame.add(reportPanel, BorderLayout.CENTER);
         settingsPanel.setVisible(false);
-        chartPanel.setVisible(false);
+        chartsPanel.setVisible(false);
         reportPanel.setVisible(true);
         accountUser.setVisible(false);
         frame.revalidate();
@@ -82,7 +83,7 @@ public class MainPageUser {
         public void setAccountUserPanel(){
         frame.add(accountUser, BorderLayout.CENTER);
         settingsPanel.setVisible(false);
-        chartPanel.setVisible(false);
+        chartsPanel.setVisible(false);
         reportPanel.setVisible(false);
         accountUser.setVisible(true);
         frame.revalidate();
@@ -91,7 +92,7 @@ public class MainPageUser {
     public void setSettingsPanel(){
         frame.add(settingsPanel, BorderLayout.CENTER);
         settingsPanel.setVisible(true);
-        chartPanel.setVisible(false);
+        chartsPanel.setVisible(false);
         reportPanel.setVisible(false);
         accountUser.setVisible(false);
         frame.revalidate();
@@ -101,6 +102,7 @@ public class MainPageUser {
         System.exit(0);
     }
     
+    public ChartsPanel getChartsPanel(){return this.chartsPanel;}
     public SettingsPanel getSettingsPanel(){return this.settingsPanel;}
     public ReportPanel getReportPanel(){return this.reportPanel;}
     public AccountUserPanel getAccountUser(){return this.accountUser;}

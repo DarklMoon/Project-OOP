@@ -15,6 +15,7 @@ public class ReportPanel extends JPanel{
     private Box b1, b2, b3, b4, b5, b6;
     private Font font, font2;
     private JScrollPane scroll;
+    private File file;
     public static final Color VERY_LIGHT_RED = new Color(51, 204, 255);
 
     public ReportPanel() {
@@ -158,10 +159,18 @@ public class ReportPanel extends JPanel{
         JFileChooser fc = new JFileChooser();
         int returnVal = fc.showOpenDialog(frame);
         if(returnVal == JFileChooser.APPROVE_OPTION){
-            File file = fc.getSelectedFile();
+            file = fc.getSelectedFile();
             return file;
         }
         else{return null;}
+    }
+    
+    public void reset(){
+        this.cb.setSelectedItem("---PLEASE SELECT---");
+        this.tf1.setText("");
+        this.tf2.setText("");
+        this.ta.setText("");
+        this.file = null;
     }
 }//top, left, bottom, and right
 //สิ่งที่ควรมีหน้า Report :

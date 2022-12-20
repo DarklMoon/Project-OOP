@@ -3,21 +3,21 @@ import java.awt.GridLayout;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-public class SetAdmin {
+public class SetAdminPassword {
     private JFrame frame;
     private JPanel mainPanel, buttonPanel;
     private JPasswordField passField;
     private JButton button;
     private JLabel label;
     
-    public SetAdmin(){
-        frame = new JFrame("Admin Verifying");
+    public SetAdminPassword(){
+        frame = new JFrame("Set Admin Password");
         
         mainPanel = new JPanel();
         mainPanel.setBorder(new EmptyBorder(15,30,15,30));
         mainPanel.setLayout(new GridLayout(3,1));
         
-        label = new JLabel("Enter Admin Password:");
+        label = new JLabel("Set New Admin Password:");
         mainPanel.add(label);
         
         passField = new JPasswordField();
@@ -26,7 +26,7 @@ public class SetAdmin {
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
         
-        button = new JButton("Verify");
+        button = new JButton("Change Password");
         buttonPanel.add(button);
         mainPanel.add(buttonPanel);
         
