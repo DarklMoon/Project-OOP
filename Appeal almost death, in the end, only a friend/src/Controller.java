@@ -186,7 +186,11 @@ public class Controller implements ActionListener, WindowListener{
         
         if(e.getSource().equals(mainAdminPage.getIconButton())){mainAdminPage.setMainPanel();}
         if(e.getSource().equals(mainAdminPage.getReportButton())){mainAdminPage.setReportTablePanel();}
-        if(e.getSource().equals(mainAdminPage.getAccountButton())){mainAdminPage.setAccountAdminPanel();}
+        if(e.getSource().equals(mainAdminPage.getAccountButton())){
+            mainAdminPage.setAccountAdminPanel();
+            mainAdminPage.getAccountAdmin().getTitle().setText(model.getAccount().getUsername());
+            mainAdminPage.getAccountAdmin().getEmail().setText(model.getAccount().getEmail());
+        }
         if(e.getSource().equals(mainAdminPage.getSettingsButton())){mainAdminPage.setSettingsPanel();}
         
         if(e.getSource().equals(mainPage.getSettingsPanel().getAdminButton())){setAdmin.getFrame().setVisible(true);}

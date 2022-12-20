@@ -107,6 +107,7 @@ public class MainAdminPage {
         System.exit(0);
     }
     
+    public AccountAdminPanel getAccountAdmin(){return this.accountAdmin;}
     public ChartsAdminPanel getChartsPanel(){return this.chartAdminPanel;}
     public SettingsAdminPanel getSettingsPanel(){return this.settingsPanel;}
 }
