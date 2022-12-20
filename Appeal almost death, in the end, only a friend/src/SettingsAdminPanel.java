@@ -6,7 +6,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 public class SettingsAdminPanel extends JPanel{
-    private JButton setAdminPassBtn, logoutBtn, exitBtn, changePasswordBtn;
+    private JButton setAdminPassBtn, logoutBtn, exitBtn, changeNameBtn, changePasswordBtn, changeEmailBtn;
     private JLabel settingsLabel;
     private JPanel panel;
     
@@ -20,25 +20,32 @@ public class SettingsAdminPanel extends JPanel{
         this.add(settingsLabel, BorderLayout.NORTH);
         
         panel = new JPanel();
-        GridLayout layout = new GridLayout(4,1);
+        GridLayout layout = new GridLayout(3,2);
         layout.setVgap(25);
+        layout.setHgap(25);
         panel.setLayout(layout);
-        panel.setBorder(new EmptyBorder(25,350,50,350));
+        panel.setBorder(new EmptyBorder(50,180,100,180));
         
         setAdminPassBtn = new JButton("Admin Password Settings");
-        changePasswordBtn = new JButton("Change Password");
         logoutBtn = new JButton("Logout");
         exitBtn = new JButton("Exit");
+        changeNameBtn = new JButton("Change Name");
+        changePasswordBtn = new JButton("Change Password");
+        changeEmailBtn = new JButton("Change Email");
         
+        panel.add(changeNameBtn);
         panel.add(setAdminPassBtn);
         panel.add(changePasswordBtn);
         panel.add(logoutBtn);
+        panel.add(changeEmailBtn);
         panel.add(exitBtn);
         this.add(panel, BorderLayout.CENTER);
     }
     
-    public JButton getAdminButton(){return this.setAdminPassBtn;}
+    public JButton getChangeNameButton(){return this.changeNameBtn;}
     public JButton getChangePasswordButton(){return this.changePasswordBtn;}
+    public JButton getChangeEmailButton(){return this.changeEmailBtn;}
+    public JButton getAdminButton(){return this.setAdminPassBtn;}
     public JButton getLogoutButton(){return this.logoutBtn;}
     public JButton getExitButton() {return this.exitBtn;}
 }

@@ -283,4 +283,42 @@ public class Model {
         } 
         catch (SQLException e) {e.printStackTrace(); return false;}
     }
+    
+    public boolean setNewName(String firstname, String lastname){
+        try {
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql",this.sqlUsername,this.sqlPassword);
+            s = connect.createStatement();
+            String sql = "update account set firstname = '"+firstname+"' where username = '"+account.getUsername()+"';";
+            s.executeUpdate(sql);
+            sql = "update account set lastname = '"+lastname+"' where username = '"+account.getUsername()+"';";
+            s.executeUpdate(sql);
+            login(account.getUsername());
+            return true;
+        } 
+        catch (SQLException e) {e.printStackTrace(); return false;}
+    }
+    
+    public boolean setNewPassword(String password){
+        try {
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql",this.sqlUsername,this.sqlPassword);
+            s = connect.createStatement();
+            String sql = "update account set password = '"+password+"' where username = '"+account.getUsername()+"';";
+            s.executeUpdate(sql);
+            login(account.getUsername());
+            return true;
+        } 
+        catch (SQLException e) {e.printStackTrace(); return false;}
+    }
+    
+    public boolean setNewEmail(String email){
+        try {
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql",this.sqlUsername,this.sqlPassword);
+            s = connect.createStatement();
+            String sql = "update account set email = '"+email+"' where username = '"+account.getUsername()+"';";
+            s.executeUpdate(sql);
+            login(account.getUsername());
+            return true;
+        } 
+        catch (SQLException e) {e.printStackTrace(); return false;}
+    }
 }
