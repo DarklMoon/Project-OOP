@@ -345,7 +345,8 @@ public class Controller implements ActionListener, WindowListener{
             if(!updateStatus.getIdField().getText().equals("")){
                 if(model.setNewStatus(updateStatus.getIdField().getText(), String.valueOf(updateStatus.getComboBox().getSelectedItem()))){
                     JOptionPane.showMessageDialog(null,"Status update successfully.","Status Update",JOptionPane.INFORMATION_MESSAGE);
-                    updateStatus.getFrame().setVisible(false);
+                    updateStatus.resetField();
+                    updateStatus.getFrame().setVisible(false); 
                 }
                 try {
                     Object[][] obj = model.getData();

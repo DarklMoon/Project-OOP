@@ -59,4 +59,5 @@ public class UpdateStatus {
     public JTextField getIdField(){return this.idTf;}
     public JComboBox getComboBox(){return this.comboBox;}
     public JButton getBtn(){return this.confirmBtn;}
+    public void resetField(){this.idTf.setText("");}
 }
