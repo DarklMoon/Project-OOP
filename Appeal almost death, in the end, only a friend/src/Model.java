@@ -263,14 +263,18 @@ public class Model {
     }
     
     public void setChart(DefaultCategoryDataset dataset){
-        dataset.setValue(type.getDSA(), "Marks", "Deserted area");
-        dataset.setValue(type.getDFA(), "Marks", "Defective area");
-        dataset.setValue(type.getIGA(), "Marks", "Illegal area");
-        dataset.setValue(type.getMIS(), "Marks", "Mischief");
-        dataset.setValue(type.getTFO(), "Marks", "Traffic offenders");
-        dataset.setValue(type.getNSP(), "Marks", "Non-standard products");
-        dataset.setValue(type.getFRD(), "Marks", "Fraud/Corruption");
-        dataset.setValue(type.getOTH(), "Marks", "Other");
+        if((type.getDSA() == 0)&&(type.getDFA() == 0)&&(type.getIGA() == 0)&&(type.getMIS() == 0)&&(type.getTFO() == 0)&&(type.getNSP() == 0)
+                &&(type.getFRD() == 0)&&(type.getOTH()==0)){}
+        else{
+            dataset.setValue(type.getDSA(), "Marks", "Deserted area");
+            dataset.setValue(type.getDFA(), "Marks", "Defective area");
+            dataset.setValue(type.getIGA(), "Marks", "Illegal area");
+            dataset.setValue(type.getMIS(), "Marks", "Mischief");
+            dataset.setValue(type.getTFO(), "Marks", "Traffic offenders");
+            dataset.setValue(type.getNSP(), "Marks", "Non-standard products");
+            dataset.setValue(type.getFRD(), "Marks", "Fraud/Corruption");
+            dataset.setValue(type.getOTH(), "Marks", "Other");
+        }
     }
     
     public boolean setAdminPassword(String password){
