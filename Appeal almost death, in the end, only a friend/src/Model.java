@@ -63,8 +63,9 @@ public class Model {
                         + "location varchar(150) not null,"
                         + "date varchar(10) not null,"
                         + "detail text not null,"
-                        + "image longblob,"
                         + "username varchar(50) not null,"
+                        + "email varchar(100) not null,"
+                        + "status varchar(20) not null,"
                         + "primary key (ID)"
                         + ");";
                 s.execute(sql);
@@ -202,13 +203,12 @@ public class Model {
             Format formatter = new SimpleDateFormat("MM-dd-yyyy");
             String dateString = formatter.format(date);
             String detail = report.getDetail();
-            byte[] image = report.getImage();
             String username = account.getUsername();
-            String sql = "INSERT INTO report (type,location,date,detail,image,username)"
-                    + " VALUES ("+"'"+type+"'"+","+"'"+location+"'"+","+"'"+dateString+"'"+","+"'"+detail+"'"+",?,"+"'"+username+"');";
-            PreparedStatement s = connect.prepareStatement(sql);
-            s.setBytes(1, image);
-            s.executeUpdate();
+            String email = account.getEmail();
+            String status = "Pending";
+            String sql = "INSERT INTO report (type,location,date,detail,username,email,status)"
+                    + " VALUES ('"+type+"','"+location+"','"+dateString+"','"+detail+"','"+username+"','"+email+"','"+status+"');";
+            s.executeUpdate(sql);
         } 
         catch (SQLException e) {e.printStackTrace();}
     }
@@ -324,5 +324,49 @@ public class Model {
             return true;
         } 
         catch (SQLException e) {e.printStackTrace(); return false;}
+    }
+    
+    public boolean setNewStatus(String ID, String status){
+        try {
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql",this.sqlUsername,this.sqlPassword);
+            s = connect.createStatement();
+            String sql = "update report set status = '"+status+"' where id = "+ID+";";
+            s.executeUpdate(sql);
+            login(account.getUsername());
+            return true;
+        } 
+        catch (SQLException e) {e.printStackTrace(); return false;}
+    }
+    
+    public Object[][] getData() throws IOException{
+        try {
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql",this.sqlUsername,this.sqlPassword);
+            s = connect.createStatement();
+            String sql = "select count(*) as num from report where status not in ('complete','failed');";
+            ResultSet rs = s.executeQuery(sql);
+            rs.next();
+            int count = rs.getInt("num");
+            
+            sql = "select * from report where status not in ('complete','failed');";
+            rs = s.executeQuery(sql);
+            Object[][] obj = new Object[count][8];
+            int i = 0;
+            while(rs.next()){
+                String ID = String.valueOf(rs.getInt("ID"));
+                String username = rs.getString("username");
+                String type = rs.getString("type");
+                String email = rs.getString("email");
+                String date = rs.getString("date");
+                String location = rs.getString("location");
+                String detail = rs.getString("detail");
+                String status = rs.getString("status");
+                Object[] datas = {ID,username,type,email,date,location,detail,status};
+                obj[i] = datas;
+                i++;
+            }
+            report.setData(obj);
+            return obj;
+        } 
+        catch (SQLException e) {e.printStackTrace(); return null;}
     }
 }

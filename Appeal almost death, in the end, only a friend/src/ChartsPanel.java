@@ -38,7 +38,7 @@ public class ChartsPanel extends JPanel{
         CategoryPlot plot = (CategoryPlot) chart.getPlot();
         plot= chart.getCategoryPlot();
         plot.setNoDataMessage("NO DATA");
-        plot.setNoDataMessageFont(new Font("Arial", Font.BOLD, 30));
+        plot.setNoDataMessageFont(new Font("Verdana", Font.BOLD, 30));
         plot.setNoDataMessagePaint(Color.RED);
         ChartPanel cp = new ChartPanel(chart);
         this.setLayout(new java.awt.BorderLayout());
