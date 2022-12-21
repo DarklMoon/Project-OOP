@@ -8,27 +8,33 @@ public class ReportPanel extends JPanel{
 
     private JPanel mainPanel, typePanel, locationPanel, datePanel, detailPanel, p7, p9;
     private JButton submitBtn;
-    private JLabel lb1, lb2, lb3, lb4, lb5, lb6, lbC;
+    private JLabel lb1, lb2, lb3, lb4, lb5, lb6;
     private JTextField tf1, tf2, tf3;
     private JComboBox cb;
     private JTextArea ta;
     private Box b1, b2, b3, b4, b6;
-    private Font font, font2;
+    private Font font, font2, font3;
     private JScrollPane scroll;
     public static final Color VERY_LIGHT_RED = new Color(51, 204, 255);
 
     public ReportPanel() {
         this.setLayout(new BorderLayout());
 
-        font = new Font("Tahoma", Font.PLAIN, 16);
-        font2 = new Font("Tahoma", Font.BOLD, 25);
+        font = new Font("Sarabun", Font.PLAIN, 16);
+        font2 = new Font("Sarabun", Font.BOLD, 30);
+        font3 = new Font("Sarabun", Font.BOLD, 18);
         lb1 = new JLabel("Please fill out the complaint form", JLabel.CENTER);
         lb1.setFont(font2);
         lb2 = new JLabel("Complaint types", JLabel.CENTER);
+        lb2.setFont(font3);
         lb3 = new JLabel("Location", JLabel.CENTER);
+        lb3.setFont(font3);
         lb4 = new JLabel("Date (MM/DD/YYYY)", JLabel.CENTER);
+        lb4.setFont(font3);
         lb5 = new JLabel("Details", JLabel.CENTER);
+        lb5.setFont(font3);
         lb6 = new JLabel("Image", JLabel.CENTER);
+        lb6.setFont(font3);
 
         cb = new JComboBox();
         cb.addItem("---PLEASE SELECT---");
@@ -53,7 +59,9 @@ public class ReportPanel extends JPanel{
         ta = new JTextArea(3, 10);
         ta.setFont(font);
         submitBtn = new JButton("Submit");
-
+        submitBtn.setForeground(Color.WHITE);
+        submitBtn.setBackground(new Color(76, 103, 147));
+        submitBtn.setFont(new Font("Sarabun", Font.BOLD, 16));
         mainPanel = new JPanel();
         typePanel = new JPanel();
         locationPanel = new JPanel();
@@ -76,7 +84,16 @@ public class ReportPanel extends JPanel{
         detailPanel.setLayout(new GridLayout(1, 2));
 
         p9.setLayout(new BorderLayout());
-
+        
+        Color colorBack = new Color(139, 188, 204);
+        mainPanel.setBackground(colorBack);
+        typePanel.setBackground(colorBack);
+        locationPanel.setBackground(colorBack);
+        datePanel.setBackground(colorBack);
+        detailPanel.setBackground(colorBack);
+        p7.setBackground(colorBack);
+        p9.setBackground(colorBack);
+        
         mainPanel.setBorder(new EmptyBorder(30, 30, 30, 30));
         typePanel.setBorder(new EmptyBorder(10, 10, 0, 50));
         locationPanel.setBorder(new EmptyBorder(10, 10, 10, 50));

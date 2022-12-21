@@ -25,7 +25,9 @@ public class ReportTablePanel extends JPanel{
     public ReportTablePanel(){
         
         title = new JLabel("Report Table", SwingConstants.CENTER);
-        title.setFont(new Font("Verdana", Font.BOLD, 32));
+        title.setFont(new Font("Sarabun", Font.BOLD, 32));
+        title.setBackground(new Color(139, 188, 204));
+        title.setOpaque(true);
         title.setBorder(new EmptyBorder(-10,0,10,0));
         
         tableModel = new TableModel();
@@ -39,7 +41,7 @@ public class ReportTablePanel extends JPanel{
             }};
         
         label = new JLabel("No data",SwingConstants.CENTER);
-        label.setFont(new Font("Verdana", Font.BOLD, 30));
+        label.setFont(new Font("Sarabun", Font.BOLD, 30));
         label.setForeground(Color.RED);
         
         table.setPreferredScrollableViewportSize(new Dimension(500, 500));
@@ -63,18 +65,24 @@ public class ReportTablePanel extends JPanel{
         table.getColumnModel().getColumn(7).setCellRenderer(renderer);
         
         updateBtn = new JButton("Update");
+        updateBtn.setFont(new Font("Sarabun", Font.BOLD, 13));
+        updateBtn.setForeground(Color.WHITE);
+        updateBtn.setBackground(new Color(76, 103, 147));
         innerPanel = new JPanel(new FlowLayout());
+        innerPanel.setBackground(new Color(139, 188, 204));
         innerPanel.add(updateBtn);
         innerPanel.setBorder(new EmptyBorder(0,20,0,0));
         header = new JPanel(new FlowLayout());
         header.add(title);
         header.add(innerPanel);
         header.setBorder(new EmptyBorder(0,50,0,0));
+        header.setBackground(new Color(139, 188, 204));
 
         this.setLayout(new BorderLayout());
         this.add(header, BorderLayout.NORTH);
         this.add(scrollPane, BorderLayout.CENTER);
         this.setBorder(new EmptyBorder(30,20,20,20));
+         this.setBackground(new Color(139, 188, 204));
     }
     
     public JTable getTable(){return this.table;}

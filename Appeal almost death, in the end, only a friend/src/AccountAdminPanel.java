@@ -35,6 +35,7 @@ public class AccountAdminPanel extends JPanel{
         label.setForeground(Color.RED);
         
         table.setPreferredScrollableViewportSize(new Dimension(700, 5));
+        tablePanel.setBackground(new Color(139, 188, 204));
         table.setOpaque(true);
         table.setFillsViewportHeight(true);
         table.setBackground(COLOR);
@@ -59,22 +60,25 @@ public class AccountAdminPanel extends JPanel{
         picture = new JLabel(icon);
         emailLabel = new JLabel("OOP@hotmail.com", SwingConstants.CENTER);
         title = new JLabel("ADMIN", SwingConstants.CENTER);
-        title.setFont(new Font("Verdana", Font.BOLD, 32));
+        title.setFont(new Font("Sarabun", Font.BOLD, 32));
+//        emailLabel.setFont(new Font("Sarabun", Font.BOLD, 12));
         
         profilePanel = new JPanel(new BorderLayout());
+        profilePanel.setBackground(new Color(139, 188, 204));
         profilePanel.setBorder(new EmptyBorder(80,0,100,0));
         profilePanel.add(title, BorderLayout.NORTH);
         profilePanel.add(picture, BorderLayout.CENTER);
         profilePanel.add(emailLabel, BorderLayout.SOUTH);
         
         wrapPanel = new JPanel(new BorderLayout());
+        wrapPanel.setBackground(new Color(139, 188, 204));
         wrapPanel.add(tablePanel, BorderLayout.EAST);
         wrapPanel.add(profilePanel, BorderLayout.WEST);
         wrapPanel.setBorder(new EmptyBorder(20,40,10,0));
         
         this.setLayout(new BorderLayout());
         this.add(wrapPanel, BorderLayout.CENTER);
-        
+        this.setBackground(new Color(139, 188, 204));
     }
     
     public JTable getTable(){return this.table;}
