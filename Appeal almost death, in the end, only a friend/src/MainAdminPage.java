@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import javax.swing.*;
 
 public class MainAdminPage {
@@ -27,26 +28,28 @@ public class MainAdminPage {
         menuPanel.setPreferredSize(new Dimension(800,100));
         
         iconBtn = new JButton("Call Sing");
+        iconBtn.setFont(new Font("Verdana", Font.BOLD, 24));
         iconBtn.setBackground(new Color(217,217,217));
         iconBtn.setOpaque(true);
         menuPanel.add(iconBtn);
         
         reportBtn = new JButton("Reported");
+        reportBtn.setFont(new Font("Verdana", Font.BOLD, 24));
         reportBtn.setBackground(new Color(255,97,97));
         reportBtn.setOpaque(true);
         menuPanel.add(reportBtn);
         
         accountBtn = new JButton("Account");
+        accountBtn.setFont(new Font("Verdana", Font.BOLD, 24));
         accountBtn.setBackground(new Color(111,168,255));
         accountBtn.setOpaque(true);
         menuPanel.add(accountBtn);
         
         settingBtn = new JButton("Settings");
+        settingBtn.setFont(new Font("Verdana", Font.BOLD, 24));
         settingBtn.setBackground(new Color(85,189,96));
         settingBtn.setOpaque(true);
         menuPanel.add(settingBtn);
-        
-       
         
         frame.add(menuPanel, BorderLayout.NORTH);
         frame.add(chartAdminPanel, BorderLayout.CENTER);
@@ -104,6 +107,7 @@ public class MainAdminPage {
         System.exit(0);
     }
     
+    public AccountAdminPanel getAccountAdmin(){return this.accountAdmin;}
     public ChartsAdminPanel getChartsPanel(){return this.chartAdminPanel;}
     public SettingsAdminPanel getSettingsPanel(){return this.settingsPanel;}
 }

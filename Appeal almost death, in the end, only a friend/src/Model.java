@@ -263,14 +263,18 @@ public class Model {
     }
     
     public void setChart(DefaultCategoryDataset dataset){
-        dataset.setValue(type.getDSA(), "Marks", "Deserted area");
-        dataset.setValue(type.getDFA(), "Marks", "Defective area");
-        dataset.setValue(type.getIGA(), "Marks", "Illegal area");
-        dataset.setValue(type.getMIS(), "Marks", "Mischief");
-        dataset.setValue(type.getTFO(), "Marks", "Traffic offenders");
-        dataset.setValue(type.getNSP(), "Marks", "Non-standard products");
-        dataset.setValue(type.getFRD(), "Marks", "Fraud/Corruption");
-        dataset.setValue(type.getOTH(), "Marks", "Other");
+        if((type.getDSA() == 0)&&(type.getDFA() == 0)&&(type.getIGA() == 0)&&(type.getMIS() == 0)&&(type.getTFO() == 0)&&(type.getNSP() == 0)
+                &&(type.getFRD() == 0)&&(type.getOTH()==0)){}
+        else{
+            dataset.setValue(type.getDSA(), "Marks", "Deserted area");
+            dataset.setValue(type.getDFA(), "Marks", "Defective area");
+            dataset.setValue(type.getIGA(), "Marks", "Illegal area");
+            dataset.setValue(type.getMIS(), "Marks", "Mischief");
+            dataset.setValue(type.getTFO(), "Marks", "Traffic offenders");
+            dataset.setValue(type.getNSP(), "Marks", "Non-standard products");
+            dataset.setValue(type.getFRD(), "Marks", "Fraud/Corruption");
+            dataset.setValue(type.getOTH(), "Marks", "Other");
+        }
     }
     
     public boolean setAdminPassword(String password){
@@ -279,6 +283,44 @@ public class Model {
             s = connect.createStatement();
             String sql = "update adminPassword set password = '"+password+"';";
             s.executeUpdate(sql);
+            return true;
+        } 
+        catch (SQLException e) {e.printStackTrace(); return false;}
+    }
+    
+    public boolean setNewName(String firstname, String lastname){
+        try {
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql",this.sqlUsername,this.sqlPassword);
+            s = connect.createStatement();
+            String sql = "update account set firstname = '"+firstname+"' where username = '"+account.getUsername()+"';";
+            s.executeUpdate(sql);
+            sql = "update account set lastname = '"+lastname+"' where username = '"+account.getUsername()+"';";
+            s.executeUpdate(sql);
+            login(account.getUsername());
+            return true;
+        } 
+        catch (SQLException e) {e.printStackTrace(); return false;}
+    }
+    
+    public boolean setNewPassword(String password){
+        try {
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql",this.sqlUsername,this.sqlPassword);
+            s = connect.createStatement();
+            String sql = "update account set password = '"+password+"' where username = '"+account.getUsername()+"';";
+            s.executeUpdate(sql);
+            login(account.getUsername());
+            return true;
+        } 
+        catch (SQLException e) {e.printStackTrace(); return false;}
+    }
+    
+    public boolean setNewEmail(String email){
+        try {
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql",this.sqlUsername,this.sqlPassword);
+            s = connect.createStatement();
+            String sql = "update account set email = '"+email+"' where username = '"+account.getUsername()+"';";
+            s.executeUpdate(sql);
+            login(account.getUsername());
             return true;
         } 
         catch (SQLException e) {e.printStackTrace(); return false;}

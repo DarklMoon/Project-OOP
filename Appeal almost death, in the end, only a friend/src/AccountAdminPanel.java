@@ -306,6 +306,7 @@ public class AccountAdminPanel extends JPanel{
             fireTableCellUpdated(row, col);
         }
     }
-    
+    public JLabel getTitle(){return this.title;}
+    public JLabel getEmail(){return this.emailLabel;}
 }
 

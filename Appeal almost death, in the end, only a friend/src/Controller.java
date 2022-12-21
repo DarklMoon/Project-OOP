@@ -15,6 +15,9 @@ public class Controller implements ActionListener, WindowListener{
     private MainAdminPage mainAdminPage;
     private SetAdmin setAdmin;
     private SetAdminPassword setAdminPassword;
+    private ChangeName changeName;
+    private ChangePassword changePass;
+    private ChangeEmail changeEmail;
     private Model model;
     
     public Controller(){
@@ -24,6 +27,9 @@ public class Controller implements ActionListener, WindowListener{
         mainAdminPage = new MainAdminPage();
         setAdmin = new SetAdmin();
         setAdminPassword = new SetAdminPassword();
+        changeName = new ChangeName();
+        changePass = new ChangePassword();
+        changeEmail = new ChangeEmail();
         model = new Model();
         init();
     }
@@ -49,10 +55,16 @@ public class Controller implements ActionListener, WindowListener{
         mainPage.getSettingsPanel().getAdminButton().addActionListener(this);
         mainPage.getSettingsPanel().getExitButton().addActionListener(this);
         mainPage.getSettingsPanel().getLogoutButton().addActionListener(this);
+        mainPage.getSettingsPanel().getChangeNameButton().addActionListener(this);
+        mainPage.getSettingsPanel().getChangePasswordButton().addActionListener(this);
+        mainPage.getSettingsPanel().getChangeEmailButton().addActionListener(this);
         
         mainAdminPage.getSettingsPanel().getAdminButton().addActionListener(this);
         mainAdminPage.getSettingsPanel().getExitButton().addActionListener(this);
         mainAdminPage.getSettingsPanel().getLogoutButton().addActionListener(this);
+        mainAdminPage.getSettingsPanel().getChangeNameButton().addActionListener(this);
+        mainAdminPage.getSettingsPanel().getChangePasswordButton().addActionListener(this);
+        mainAdminPage.getSettingsPanel().getChangeEmailButton().addActionListener(this);
         
         mainPage.getReportPanel().getImageBtn().addActionListener(this);
         mainPage.getReportPanel().getSummitBtn().addActionListener(this);  
@@ -60,9 +72,18 @@ public class Controller implements ActionListener, WindowListener{
         setAdmin.getButton().addActionListener(this);
         setAdminPassword.getButton().addActionListener(this);
         
+        changeName.getButton().addActionListener(this);
+        changePass.getButton().addActionListener(this);
+        changeEmail.getButton().addActionListener(this);
+              
         mainPage.getFrame().addWindowListener(this);
         loginPage.getFrame().addWindowListener(this);
         regPage.getFrame().addWindowListener(this);
+        setAdmin.getFrame().addWindowListener(this);
+        setAdminPassword.getFrame().addWindowListener(this);
+        changeName.getFrame().addWindowListener(this);
+        changePass.getFrame().addWindowListener(this);
+        changeEmail.getFrame().addWindowListener(this);
         
         loginPage.getFrame().setVisible(true);
     }
@@ -165,16 +186,26 @@ public class Controller implements ActionListener, WindowListener{
         
         if(e.getSource().equals(mainAdminPage.getIconButton())){mainAdminPage.setMainPanel();}
         if(e.getSource().equals(mainAdminPage.getReportButton())){mainAdminPage.setReportTablePanel();}
-        if(e.getSource().equals(mainAdminPage.getAccountButton())){mainAdminPage.setAccountAdminPanel();}
+        if(e.getSource().equals(mainAdminPage.getAccountButton())){
+            mainAdminPage.setAccountAdminPanel();
+            mainAdminPage.getAccountAdmin().getTitle().setText(model.getAccount().getUsername());
+            mainAdminPage.getAccountAdmin().getEmail().setText(model.getAccount().getEmail());
+        }
         if(e.getSource().equals(mainAdminPage.getSettingsButton())){mainAdminPage.setSettingsPanel();}
         
         if(e.getSource().equals(mainPage.getSettingsPanel().getAdminButton())){setAdmin.getFrame().setVisible(true);}
         if(e.getSource().equals(mainPage.getSettingsPanel().getExitButton())){mainPage.exit();}
         if(e.getSource().equals(mainPage.getSettingsPanel().getLogoutButton())){model.logout(); mainPage.getFrame().setVisible(false); loginPage.getFrame().setVisible(true);}
+        if(e.getSource().equals(mainPage.getSettingsPanel().getChangeNameButton())){changeName.getFrame().setVisible(true);}
+        if(e.getSource().equals(mainPage.getSettingsPanel().getChangePasswordButton())){changePass.getFrame().setVisible(true);}
+        if(e.getSource().equals(mainPage.getSettingsPanel().getChangeEmailButton())){changeEmail.getFrame().setVisible(true);}
         
         if(e.getSource().equals(mainAdminPage.getSettingsPanel().getAdminButton())){setAdminPassword.getFrame().setVisible(true);}
         if(e.getSource().equals(mainAdminPage.getSettingsPanel().getExitButton())){mainAdminPage.exit();}
         if(e.getSource().equals(mainAdminPage.getSettingsPanel().getLogoutButton())){model.logout(); mainAdminPage.getFrame().setVisible(false); loginPage.getFrame().setVisible(true);}
+        if(e.getSource().equals(mainAdminPage.getSettingsPanel().getChangeNameButton())){changeName.getFrame().setVisible(true);}
+        if(e.getSource().equals(mainAdminPage.getSettingsPanel().getChangePasswordButton())){changePass.getFrame().setVisible(true);}
+        if(e.getSource().equals(mainAdminPage.getSettingsPanel().getChangeEmailButton())){changeEmail.getFrame().setVisible(true);}
         
         if(e.getSource().equals(mainPage.getReportPanel().getImageBtn())){
             File file = mainPage.getReportPanel().ImageChooser(mainPage.getFrame());
@@ -256,7 +287,7 @@ public class Controller implements ActionListener, WindowListener{
         if(e.getSource().equals(setAdminPassword.getButton())){
             if(setAdminPassword.getPasswordField().getPassword().length!=0){
                 if(model.setAdminPassword(String.valueOf(setAdminPassword.getPasswordField().getPassword()))){
-                    JOptionPane.showMessageDialog(mainPage.getFrame(),"Password change successfully.","Password Change",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(mainPage.getFrame(),"Password change successfully.","Password Changed",JOptionPane.INFORMATION_MESSAGE);
                     setAdminPassword.resetField();
                     setAdminPassword.getFrame().setVisible(false);
                 }
@@ -265,15 +296,73 @@ public class Controller implements ActionListener, WindowListener{
                 JOptionPane.showMessageDialog(mainPage.getFrame(),"Please enter admin password.","Missing Password",JOptionPane.WARNING_MESSAGE);
             }
         }
+        
+        if(e.getSource().equals(changeName.getButton())){
+            if(!changeName.getFirstnameField().getText().equals("")){
+                if(!changeName.getLastnameField().getText().equals("")){
+                    if(model.setNewName(changeName.getFirstnameField().getText(), changeName.getLastnameField().getText())){
+                        JOptionPane.showMessageDialog(null,"Name change successfully.","Name Changed",JOptionPane.INFORMATION_MESSAGE);
+                        changeName.resetField();
+                        changeName.getFrame().setVisible(false);
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(null,"Please enter new lastname.","Missing Lastname",JOptionPane.WARNING_MESSAGE);
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"Please enter new firstname.","Missing Firstname",JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        
+        if(e.getSource().equals(changePass.getButton())){
+            if(changePass.getPassField().getPassword().length!=0){
+                if(model.setNewPassword(String.valueOf(changePass.getPassField().getPassword()))){
+                    JOptionPane.showMessageDialog(null,"Password change successfully.","Password Changed",JOptionPane.INFORMATION_MESSAGE);
+                    changePass.resetField();
+                    changePass.getFrame().setVisible(false);
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"Please enter new password.","Missing Password",JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        
+        if(e.getSource().equals(changeEmail.getButton())){
+            if(!changeEmail.getEmailField().getText().equals("")){
+                if(model.setNewEmail(changeEmail.getEmailField().getText())){
+                    JOptionPane.showMessageDialog(null,"Email change successfully.","Email Changed",JOptionPane.INFORMATION_MESSAGE);
+                    changeEmail.resetField();
+                    changeEmail.getFrame().setVisible(false);
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"Please enter new email.","Missing Email",JOptionPane.WARNING_MESSAGE);
+            }
+        }
     }
 
     @Override public void windowOpened(WindowEvent e) {
-        model.openDataBase(); 
-        model.getType(); 
-        model.setChart(mainPage.getChartsPanel().getDataset());
-        model.setChart(mainAdminPage.getChartsPanel().getDataset());
+        if(e.getSource().equals(mainPage.getFrame())||
+                e.getSource().equals(loginPage.getFrame())||
+                e.getSource().equals(regPage.getFrame())){
+            model.openDataBase(); 
+            model.getType(); 
+            model.setChart(mainPage.getChartsPanel().getDataset());
+            model.setChart(mainAdminPage.getChartsPanel().getDataset());
+        }
     }
-    @Override public void windowClosing(WindowEvent e) {model.closeDataBase();}
+    @Override public void windowClosing(WindowEvent e) {
+        if(e.getSource().equals(mainPage.getFrame())||
+                e.getSource().equals(loginPage.getFrame())||
+                e.getSource().equals(regPage.getFrame())){
+            model.closeDataBase();
+        }
+        if(e.getSource().equals(setAdmin.getFrame())){setAdmin.resetField();}
+        if(e.getSource().equals(setAdminPassword.getFrame())){setAdminPassword.resetField();}
+        if(e.getSource().equals(changeName.getFrame())){changeName.resetField();}
+        if(e.getSource().equals(changePass.getFrame())){changePass.resetField();}
+    }
     @Override public void windowClosed(WindowEvent e) {}
     @Override public void windowIconified(WindowEvent e) {}
     @Override public void windowDeiconified(WindowEvent e) {}

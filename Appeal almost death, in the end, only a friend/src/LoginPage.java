@@ -22,7 +22,7 @@ public class LoginPage {
         panel.setBorder(new EmptyBorder(30,30,85,30));
         
         loginLabel = new JLabel("Login", SwingConstants.CENTER);
-        loginLabel.setFont(new Font("Verdana", Font.PLAIN, 52));
+        loginLabel.setFont(new Font("Verdana", Font.BOLD, 52));
         loginLabel.setBorder(new EmptyBorder(10,0,0,0));
         frame.add(loginLabel, BorderLayout.NORTH);
         
