@@ -16,6 +16,7 @@ public class AccountUserPanel extends JPanel {
     
     public AccountUserPanel(){       
         tablePanel = new JPanel(new BorderLayout());
+        tablePanel.setBackground(new Color(139, 188, 204));
         table = new JTable(new TableModel()){
              public String getToolTipText( MouseEvent e ){
                 int row = rowAtPoint( e.getPoint() );   
@@ -53,23 +54,25 @@ public class AccountUserPanel extends JPanel {
         picture = new JLabel(icon);
         emailLabel = new JLabel("OOP@hotmail.com", SwingConstants.CENTER);
         title = new JLabel("Username", SwingConstants.CENTER);
-        title.setFont(new Font("Verdana", Font.BOLD, 32));
+        title.setFont(new Font("Sarabun", Font.BOLD, 32));
         
         profilePanel = new JPanel(new BorderLayout());
         profilePanel.setBorder(new EmptyBorder(80,20,100,0));
+        profilePanel.setBackground(new Color(139, 188, 204));
         profilePanel.add(title, BorderLayout.NORTH);
         profilePanel.add(picture, BorderLayout.CENTER);
         profilePanel.add(emailLabel, BorderLayout.SOUTH);
-        
+
         wrapPanel = new JPanel(new BorderLayout());
         wrapPanel.add(tablePanel, BorderLayout.EAST);
         wrapPanel.add(profilePanel, BorderLayout.WEST);
         wrapPanel.setBorder(new EmptyBorder(20,40,10,0));
+        wrapPanel.setBackground(new Color(139, 188, 204));
         
         this.setLayout(new BorderLayout());
         this.add(wrapPanel, BorderLayout.CENTER);
+        this.setBackground(new Color(139, 188, 204));
     }
-    
     class ButtonRenderer extends JButton implements  TableCellRenderer{
 
         public ButtonRenderer() {
@@ -168,10 +171,10 @@ public class AccountUserPanel extends JPanel {
             locationPanel = new JPanel();
             detailPanel = new JPanel();
             
-            locationLabel.setFont(new Font("Verdana", Font.BOLD, 20));
-            detailLabel.setFont(new Font("Verdana", Font.BOLD, 20));
-            locationArea.setFont(new Font("Verdana", Font.PLAIN, 14));
-            detailArea.setFont(new Font("Verdana", Font.PLAIN, 14));
+            locationLabel.setFont(new Font("Sarabun", Font.BOLD, 20));
+            detailLabel.setFont(new Font("Sarabun", Font.BOLD, 20));
+            locationArea.setFont(new Font("Sarabun", Font.PLAIN, 14));
+            detailArea.setFont(new Font("Sarabun", Font.PLAIN, 14));
             locationArea.setEditable(false);
             detailArea.setEditable(false);
             locationArea.setLineWrap(true);

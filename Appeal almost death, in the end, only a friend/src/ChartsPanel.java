@@ -21,8 +21,9 @@ public class ChartsPanel extends JPanel{
     public ChartsPanel(){
         dataset = new DefaultCategoryDataset();
         JFreeChart chart = ChartFactory.createBarChart3D("Graph Showing Number of Complaints", "Type of Complaints", "Number of Complaints", dataset, PlotOrientation.VERTICAL, false, true, false);
-        chart.setBackgroundPaint(Color.WHITE);
+        chart.setBackgroundPaint(new Color(139, 188, 204));
         chart.getTitle().setPaint(Color.BLACK); 
+        chart.getTitle().setFont(new Font("Sarabun", Font.BOLD, 20));
         CategoryPlot p = chart.getCategoryPlot();
         p.setRangeGridlinePaint(Color.WHITE);
 
@@ -38,12 +39,13 @@ public class ChartsPanel extends JPanel{
         CategoryPlot plot = (CategoryPlot) chart.getPlot();
         plot= chart.getCategoryPlot();
         plot.setNoDataMessage("NO DATA");
-        plot.setNoDataMessageFont(new Font("Verdana", Font.BOLD, 30));
+        plot.setNoDataMessageFont(new Font("Sarabun", Font.BOLD, 30));
         plot.setNoDataMessagePaint(Color.RED);
         ChartPanel cp = new ChartPanel(chart);
         this.setLayout(new java.awt.BorderLayout());
         this.setBorder(new EmptyBorder(20,0,0,0));
         this.add(cp,BorderLayout.CENTER);
+        this.setBackground(new Color(139, 188, 204));
         this.validate();
     }
     
