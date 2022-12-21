@@ -17,7 +17,7 @@ public class Model {
     private Connection connect = null;
     private Statement s = null;
     private String sqlUsername = "root";
-    private String sqlPassword = "";
+    private String sqlPassword = "mark1234";
     
     public Model(){
         this.account = new Account();
@@ -338,19 +338,24 @@ public class Model {
         catch (SQLException e) {e.printStackTrace(); return false;}
     }
     
-    public Object[][] getData() throws IOException{
+    public Object[][] getData(String panel) throws IOException{
         try {
             connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql",this.sqlUsername,this.sqlPassword);
             s = connect.createStatement();
-            String sql = "select count(*) as num from report where status not in ('complete','failed');";
+            String sql;
+            if(panel.equals("report")){sql = "select count(*) as num from report where status not in ('complete','failed');";}
+            else{sql = "select count(*) as num from report where status in ('complete','failed');";}
+            
             ResultSet rs = s.executeQuery(sql);
             rs.next();
             int count = rs.getInt("num");
+            if(panel.equals("report")){sql = "select * from report where status not in ('complete','failed');";}
+            else{sql = "select * from report where status in ('complete','failed');";}
             
-            sql = "select * from report where status not in ('complete','failed');";
             rs = s.executeQuery(sql);
             Object[][] obj = new Object[count][8];
             int i = 0;
+            System.out.println(sql);
             while(rs.next()){
                 String ID = String.valueOf(rs.getInt("ID"));
                 String username = rs.getString("username");
@@ -361,7 +366,7 @@ public class Model {
                 String detail = rs.getString("detail");
                 String status = rs.getString("status");
                 Object[] datas = {ID,username,type,email,date,location,detail,status};
-                obj[i] = datas;
+                obj[i] = datas;   
                 i++;
             }
             report.setData(obj);

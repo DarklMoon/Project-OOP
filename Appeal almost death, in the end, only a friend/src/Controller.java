@@ -194,7 +194,7 @@ public class Controller implements ActionListener, WindowListener{
         if(e.getSource().equals(mainAdminPage.getReportButton())){
             mainAdminPage.setReportTablePanel();
             try {
-                Object[][] obj = model.getData();
+                Object[][] obj = model.getData("report");
                 if(obj.length==0){mainAdminPage.getReportTable().setNoData();}
                 mainAdminPage.getReportTable().getTableModel().setData(obj);
             }
@@ -202,6 +202,12 @@ public class Controller implements ActionListener, WindowListener{
         }
         if(e.getSource().equals(mainAdminPage.getAccountButton())){
             mainAdminPage.setAccountAdminPanel();
+            try {
+                Object[][] obj = model.getData("account");
+                if(obj.length==0){mainAdminPage.getAccountAdmin().setNoData();}
+                mainAdminPage.getAccountAdmin().getTableModel().setData(obj);
+            }
+            catch(IOException ex){ex.printStackTrace();}
             mainAdminPage.getAccountAdmin().getTitle().setText(model.getAccount().getUsername());
             mainAdminPage.getAccountAdmin().getEmail().setText(model.getAccount().getEmail());
         }
@@ -349,7 +355,7 @@ public class Controller implements ActionListener, WindowListener{
                     updateStatus.getFrame().setVisible(false); 
                 }
                 try {
-                    Object[][] obj = model.getData();
+                    Object[][] obj = model.getData("report");
                     if(obj.length==0){mainAdminPage.getReportTable().setNoData();}
                     mainAdminPage.getReportTable().getTableModel().setData(obj);
                 }
@@ -372,9 +378,16 @@ public class Controller implements ActionListener, WindowListener{
             model.setChart(mainPage.getChartsPanel().getDataset());
             model.setChart(mainAdminPage.getChartsPanel().getDataset());
             try {
-                Object[][] obj = model.getData();
+                Object[][] obj = model.getData("report");
                 if(obj.length==0){mainAdminPage.getReportTable().setNoData();}
                 mainAdminPage.getReportTable().getTableModel().setData(obj);
+            }
+            catch(IOException ex){ex.printStackTrace();}
+            
+            try {
+                Object[][] obj = model.getData("account");
+                if(obj.length==0){mainAdminPage.getAccountAdmin().setNoData();}
+                mainAdminPage.getAccountAdmin().getTableModel().setData(obj);
             }
             catch(IOException ex){ex.printStackTrace();}
         }
