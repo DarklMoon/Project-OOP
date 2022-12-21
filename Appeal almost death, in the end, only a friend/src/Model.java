@@ -17,7 +17,7 @@ public class Model {
     private Connection connect = null;
     private Statement s = null;
     private String sqlUsername = "root";
-    private String sqlPassword = "mark1234";
+    private String sqlPassword = "";
     
     public Model(){
         this.account = new Account();
