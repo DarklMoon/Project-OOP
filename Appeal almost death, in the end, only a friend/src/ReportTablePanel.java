@@ -107,14 +107,13 @@ public class ReportTablePanel extends JPanel{
 
     class ButtonEditor extends DefaultCellEditor{
         protected JButton btn;
-        private String detail, pathImage, location, username;
+        private String detail, location, username;
         private Boolean clicked, clickedDetail;
         private JFrame frame;
         private JPanel locationPanel, detailPanel;
-        private JLabel imageShow, locationLabel, detailLabel;
+        private JLabel locationLabel, detailLabel;
         private JScrollPane locationScrollPane, detailScrollPane;
         private JTextArea detailArea, locationArea;
-        private ImageIcon image;
 
         public ButtonEditor(JTextField txt) {
             super(txt);

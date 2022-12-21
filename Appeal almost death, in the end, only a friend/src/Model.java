@@ -355,7 +355,6 @@ public class Model {
             rs = s.executeQuery(sql);
             Object[][] obj = new Object[count][8];
             int i = 0;
-            System.out.println(sql);
             while(rs.next()){
                 String ID = String.valueOf(rs.getInt("ID"));
                 String username = rs.getString("username");
@@ -366,6 +365,38 @@ public class Model {
                 String detail = rs.getString("detail");
                 String status = rs.getString("status");
                 Object[] datas = {ID,username,type,email,date,location,detail,status};
+                obj[i] = datas;   
+                i++;
+            }
+            report.setData(obj);
+            return obj;
+        } 
+        catch (SQLException e) {e.printStackTrace(); return null;}
+    }
+    
+    public Object[][] getUserData() throws IOException{
+        try {
+            connect = DriverManager.getConnection("jdbc:mysql://localhost/mysql",this.sqlUsername,this.sqlPassword);
+            s = connect.createStatement();
+            String sql;
+            sql = "select count(*) as num from report where username = '"+account.getUsername()+"';";
+            
+            ResultSet rs = s.executeQuery(sql);
+            rs.next();
+            int count = rs.getInt("num");
+            sql = "select * from report where username = '"+account.getUsername()+"';";
+            
+            rs = s.executeQuery(sql);
+            Object[][] obj = new Object[count][6];
+            int i = 0;
+            while(rs.next()){
+                String ID = String.valueOf(rs.getInt("ID"));
+                String type = rs.getString("type");
+                String date = rs.getString("date");
+                String location = rs.getString("location");
+                String detail = rs.getString("detail");
+                String status = rs.getString("status");
+                Object[] datas = {ID,type,date,location,detail,status};
                 obj[i] = datas;   
                 i++;
             }

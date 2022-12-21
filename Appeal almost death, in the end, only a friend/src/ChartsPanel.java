@@ -28,9 +28,8 @@ public class ChartsPanel extends JPanel{
         p.setRangeGridlinePaint(Color.WHITE);
 
         p = (CategoryPlot)chart.getPlot();
-        p.setBackgroundPaint(SystemColor.inactiveCaption);//change background color
-
-        //set  bar chart color
+        p.setBackgroundPaint(SystemColor.inactiveCaption);
+        
         ((BarRenderer)p.getRenderer()).setBarPainter(new StandardBarPainter());
 
         BarRenderer r = (BarRenderer)chart.getCategoryPlot().getRenderer();

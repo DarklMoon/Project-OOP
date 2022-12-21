@@ -61,7 +61,6 @@ public class AccountAdminPanel extends JPanel{
         emailLabel = new JLabel("OOP@hotmail.com", SwingConstants.CENTER);
         title = new JLabel("ADMIN", SwingConstants.CENTER);
         title.setFont(new Font("Sarabun", Font.BOLD, 32));
-//        emailLabel.setFont(new Font("Sarabun", Font.BOLD, 12));
         
         profilePanel = new JPanel(new BorderLayout());
         profilePanel.setBackground(new Color(139, 188, 204));
@@ -82,7 +81,7 @@ public class AccountAdminPanel extends JPanel{
     }
     
     public JTable getTable(){return this.table;}
-    public void setNoData(){label.setSize(970,200); table.add(label);}
+    public void setNoData(){label.setSize(690,300); table.add(label);}
     public TableModel getTableModel(){return this.tableModel;}
     
     class ButtonRenderer extends JButton implements  TableCellRenderer{

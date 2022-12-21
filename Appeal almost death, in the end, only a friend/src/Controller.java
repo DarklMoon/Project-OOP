@@ -185,6 +185,12 @@ public class Controller implements ActionListener, WindowListener{
         if(e.getSource().equals(mainPage.getAccountButton())){
             mainPage.setAccountUserPanel();
             mainPage.getReportPanel().reset();
+            try {
+                Object[][] obj = model.getUserData();
+                if(obj.length==0){mainPage.getAccountUser().setNoData();}
+                mainPage.getAccountUser().getTableModel().setData(obj);
+            }
+            catch(IOException ex){ex.printStackTrace();}
             mainPage.getAccountUser().getTitle().setText(model.getAccount().getUsername());
             mainPage.getAccountUser().getEmail().setText(model.getAccount().getEmail());
         }
@@ -228,7 +234,6 @@ public class Controller implements ActionListener, WindowListener{
         if(e.getSource().equals(mainAdminPage.getSettingsPanel().getChangeEmailButton())){changeEmail.getFrame().setVisible(true);}
         
         if(e.getSource().equals(mainPage.getReportPanel().getSummitBtn())){
-            /*byte[] image = model.getReport().getImage();*/
             if(mainPage.getReportPanel().getComboBox().getSelectedItem()=="---PLEASE SELECT---"){
                 JOptionPane.showMessageDialog(mainPage.getFrame(),"Please select report type.","Missing Report Type",JOptionPane.WARNING_MESSAGE);
             }
@@ -388,6 +393,13 @@ public class Controller implements ActionListener, WindowListener{
                 Object[][] obj = model.getData("account");
                 if(obj.length==0){mainAdminPage.getAccountAdmin().setNoData();}
                 mainAdminPage.getAccountAdmin().getTableModel().setData(obj);
+            }
+            catch(IOException ex){ex.printStackTrace();}
+            
+            try {
+                Object[][] obj = model.getUserData();
+                if(obj.length==0){mainPage.getAccountUser().setNoData();}
+                mainPage.getAccountUser().getTableModel().setData(obj);
             }
             catch(IOException ex){ex.printStackTrace();}
         }
