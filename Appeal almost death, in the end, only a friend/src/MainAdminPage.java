@@ -28,26 +28,30 @@ public class MainAdminPage {
         menuPanel.setPreferredSize(new Dimension(800,100));
         
         iconBtn = new JButton("Call Sing");
-        iconBtn.setFont(new Font("Verdana", Font.BOLD, 24));
-        iconBtn.setBackground(new Color(217,217,217));
+        iconBtn.setFont(new Font("Sarabun", Font.BOLD, 24));
+        iconBtn.setForeground(Color.WHITE);
+        iconBtn.setBackground(new Color(92, 46, 126));
         iconBtn.setOpaque(true);
         menuPanel.add(iconBtn);
         
         reportBtn = new JButton("Reported");
-        reportBtn.setFont(new Font("Verdana", Font.BOLD, 24));
-        reportBtn.setBackground(new Color(255,97,97));
+        reportBtn.setFont(new Font("Sarabun", Font.BOLD, 24));
+        reportBtn.setForeground(Color.WHITE);
+        reportBtn.setBackground(new Color(76, 103, 147));
         reportBtn.setOpaque(true);
         menuPanel.add(reportBtn);
         
         accountBtn = new JButton("Account");
-        accountBtn.setFont(new Font("Verdana", Font.BOLD, 24));
-        accountBtn.setBackground(new Color(111,168,255));
+        accountBtn.setFont(new Font("Sarabun", Font.BOLD, 24));
+        accountBtn.setForeground(Color.WHITE);
+        accountBtn.setBackground(new Color(76, 103, 147));
         accountBtn.setOpaque(true);
         menuPanel.add(accountBtn);
         
         settingBtn = new JButton("Settings");
-        settingBtn.setFont(new Font("Verdana", Font.BOLD, 24));
-        settingBtn.setBackground(new Color(85,189,96));
+        settingBtn.setFont(new Font("Sarabun", Font.BOLD, 24)); 
+        settingBtn.setForeground(Color.WHITE);
+        settingBtn.setBackground(new Color(76, 103, 147));
         settingBtn.setOpaque(true);
         menuPanel.add(settingBtn);
         
@@ -107,6 +111,7 @@ public class MainAdminPage {
         System.exit(0);
     }
     
+    public ReportTablePanel getReportTable(){return this.reportTable;}
     public AccountAdminPanel getAccountAdmin(){return this.accountAdmin;}
     public ChartsAdminPanel getChartsPanel(){return this.chartAdminPanel;}
     public SettingsAdminPanel getSettingsPanel(){return this.settingsPanel;}

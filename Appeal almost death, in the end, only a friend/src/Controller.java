@@ -3,6 +3,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -18,6 +19,7 @@ public class Controller implements ActionListener, WindowListener{
     private ChangeName changeName;
     private ChangePassword changePass;
     private ChangeEmail changeEmail;
+    private UpdateStatus updateStatus;
     private Model model;
     
     public Controller(){
@@ -30,6 +32,7 @@ public class Controller implements ActionListener, WindowListener{
         changeName = new ChangeName();
         changePass = new ChangePassword();
         changeEmail = new ChangeEmail();
+        updateStatus = new UpdateStatus();
         model = new Model();
         init();
     }
@@ -66,7 +69,6 @@ public class Controller implements ActionListener, WindowListener{
         mainAdminPage.getSettingsPanel().getChangePasswordButton().addActionListener(this);
         mainAdminPage.getSettingsPanel().getChangeEmailButton().addActionListener(this);
         
-        mainPage.getReportPanel().getImageBtn().addActionListener(this);
         mainPage.getReportPanel().getSummitBtn().addActionListener(this);  
         
         setAdmin.getButton().addActionListener(this);
@@ -75,8 +77,12 @@ public class Controller implements ActionListener, WindowListener{
         changeName.getButton().addActionListener(this);
         changePass.getButton().addActionListener(this);
         changeEmail.getButton().addActionListener(this);
+        
+        mainAdminPage.getReportTable().getUpdateBtn().addActionListener(this);
+        updateStatus.getBtn().addActionListener(this);
               
         mainPage.getFrame().addWindowListener(this);
+        mainAdminPage.getFrame().addWindowListener(this);
         loginPage.getFrame().addWindowListener(this);
         regPage.getFrame().addWindowListener(this);
         setAdmin.getFrame().addWindowListener(this);
@@ -106,8 +112,8 @@ public class Controller implements ActionListener, WindowListener{
                             model.login(username);
                             loginPage.getFrame().setVisible(false);
                             loginPage.reset();
-                            if(model.getAccount().getIsAdmin()==true){mainAdminPage.getFrame().setVisible(true);}
-                            else{mainPage.getFrame().setVisible(true);}
+                            if(model.getAccount().getIsAdmin()==true){mainAdminPage.getFrame().setVisible(true); mainAdminPage.setMainPanel();}
+                            else{mainPage.getFrame().setVisible(true); mainPage.setMainPanel();}
                         }
                         else{
                             JOptionPane.showMessageDialog(loginPage.getFrame(),"Password not match. Please try again.","Incorrect Password",JOptionPane.ERROR_MESSAGE);
@@ -179,15 +185,35 @@ public class Controller implements ActionListener, WindowListener{
         if(e.getSource().equals(mainPage.getAccountButton())){
             mainPage.setAccountUserPanel();
             mainPage.getReportPanel().reset();
+            try {
+                Object[][] obj = model.getUserData();
+                if(obj.length==0){mainPage.getAccountUser().setNoData();}
+                mainPage.getAccountUser().getTableModel().setData(obj);
+            }
+            catch(IOException ex){ex.printStackTrace();}
             mainPage.getAccountUser().getTitle().setText(model.getAccount().getUsername());
             mainPage.getAccountUser().getEmail().setText(model.getAccount().getEmail());
         }
         if(e.getSource().equals(mainPage.getSettingsButton())){mainPage.setSettingsPanel(); mainPage.getReportPanel().reset();}
         
         if(e.getSource().equals(mainAdminPage.getIconButton())){mainAdminPage.setMainPanel();}
-        if(e.getSource().equals(mainAdminPage.getReportButton())){mainAdminPage.setReportTablePanel();}
+        if(e.getSource().equals(mainAdminPage.getReportButton())){
+            mainAdminPage.setReportTablePanel();
+            try {
+                Object[][] obj = model.getData("report");
+                if(obj.length==0){mainAdminPage.getReportTable().setNoData();}
+                mainAdminPage.getReportTable().getTableModel().setData(obj);
+            }
+            catch(IOException ex){ex.printStackTrace();}
+        }
         if(e.getSource().equals(mainAdminPage.getAccountButton())){
             mainAdminPage.setAccountAdminPanel();
+            try {
+                Object[][] obj = model.getData("account");
+                if(obj.length==0){mainAdminPage.getAccountAdmin().setNoData();}
+                mainAdminPage.getAccountAdmin().getTableModel().setData(obj);
+            }
+            catch(IOException ex){ex.printStackTrace();}
             mainAdminPage.getAccountAdmin().getTitle().setText(model.getAccount().getUsername());
             mainAdminPage.getAccountAdmin().getEmail().setText(model.getAccount().getEmail());
         }
@@ -207,12 +233,7 @@ public class Controller implements ActionListener, WindowListener{
         if(e.getSource().equals(mainAdminPage.getSettingsPanel().getChangePasswordButton())){changePass.getFrame().setVisible(true);}
         if(e.getSource().equals(mainAdminPage.getSettingsPanel().getChangeEmailButton())){changeEmail.getFrame().setVisible(true);}
         
-        if(e.getSource().equals(mainPage.getReportPanel().getImageBtn())){
-            File file = mainPage.getReportPanel().ImageChooser(mainPage.getFrame());
-            if(file!=null){model.getReport().setImage(model.extractBytes(file));}
-        }
         if(e.getSource().equals(mainPage.getReportPanel().getSummitBtn())){
-            byte[] image = model.getReport().getImage();
             if(mainPage.getReportPanel().getComboBox().getSelectedItem()=="---PLEASE SELECT---"){
                 JOptionPane.showMessageDialog(mainPage.getFrame(),"Please select report type.","Missing Report Type",JOptionPane.WARNING_MESSAGE);
             }
@@ -238,27 +259,13 @@ public class Controller implements ActionListener, WindowListener{
                             }
                             else{
                                 String detail = mainPage.getReportPanel().getDetailTextArea().getText();
-                                if(image==null){
-                                    int dialogResult = JOptionPane.showConfirmDialog(mainPage.getFrame(), "You didn't upload your image, are you want to continue?","No Image Include",JOptionPane.YES_NO_OPTION);
-                                    if(dialogResult == JOptionPane.YES_OPTION){
-                                        model.setReport(new Report(reportType,location,date,detail,image,model.getAccount().getUsername()));
-                                        model.saveReportToSql();
-                                        model.getType(); 
-                                        model.setChart(mainPage.getChartsPanel().getDataset());
-                                        model.setChart(mainAdminPage.getChartsPanel().getDataset());
-                                        JOptionPane.showMessageDialog(mainPage.getFrame(),"Report submit successfully.","Report Send",JOptionPane.INFORMATION_MESSAGE);
-                                        mainPage.getReportPanel().reset();
-                                    }
-                                }
-                                else{
-                                    model.setReport(new Report(reportType,location,date,detail,image,model.getAccount().getUsername()));
+                                    model.setReport(new Report(reportType,location,date,detail));
                                     model.saveReportToSql();
                                     model.getType(); 
                                     model.setChart(mainPage.getChartsPanel().getDataset());
                                     model.setChart(mainAdminPage.getChartsPanel().getDataset());
                                     JOptionPane.showMessageDialog(mainPage.getFrame(),"Report submit successfully.","Report Send",JOptionPane.INFORMATION_MESSAGE);
                                     mainPage.getReportPanel().reset();
-                                }
                             }
                         }
                     }
@@ -340,16 +347,61 @@ public class Controller implements ActionListener, WindowListener{
                 JOptionPane.showMessageDialog(null,"Please enter new email.","Missing Email",JOptionPane.WARNING_MESSAGE);
             }
         }
+        
+        if(e.getSource().equals(mainAdminPage.getReportTable().getUpdateBtn())){
+            updateStatus.getFrame().setVisible(true);
+        }
+        
+        if(e.getSource().equals(updateStatus.getBtn())){
+            if(!updateStatus.getIdField().getText().equals("")){
+                if(model.setNewStatus(updateStatus.getIdField().getText(), String.valueOf(updateStatus.getComboBox().getSelectedItem()))){
+                    JOptionPane.showMessageDialog(null,"Status update successfully.","Status Update",JOptionPane.INFORMATION_MESSAGE);
+                    updateStatus.resetField();
+                    updateStatus.getFrame().setVisible(false); 
+                }
+                try {
+                    Object[][] obj = model.getData("report");
+                    if(obj.length==0){mainAdminPage.getReportTable().setNoData();}
+                    mainAdminPage.getReportTable().getTableModel().setData(obj);
+                }
+                catch(IOException ex){ex.printStackTrace();}
+                mainAdminPage.setReportTablePanel();
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"Please enter report id.","Missing ID",JOptionPane.WARNING_MESSAGE);
+            }
+        }
     }
 
     @Override public void windowOpened(WindowEvent e) {
         if(e.getSource().equals(mainPage.getFrame())||
                 e.getSource().equals(loginPage.getFrame())||
-                e.getSource().equals(regPage.getFrame())){
+                e.getSource().equals(regPage.getFrame())||
+                e.getSource().equals(mainAdminPage.getFrame())){
             model.openDataBase(); 
             model.getType(); 
             model.setChart(mainPage.getChartsPanel().getDataset());
             model.setChart(mainAdminPage.getChartsPanel().getDataset());
+            try {
+                Object[][] obj = model.getData("report");
+                if(obj.length==0){mainAdminPage.getReportTable().setNoData();}
+                mainAdminPage.getReportTable().getTableModel().setData(obj);
+            }
+            catch(IOException ex){ex.printStackTrace();}
+            
+            try {
+                Object[][] obj = model.getData("account");
+                if(obj.length==0){mainAdminPage.getAccountAdmin().setNoData();}
+                mainAdminPage.getAccountAdmin().getTableModel().setData(obj);
+            }
+            catch(IOException ex){ex.printStackTrace();}
+            
+            try {
+                Object[][] obj = model.getUserData();
+                if(obj.length==0){mainPage.getAccountUser().setNoData();}
+                mainPage.getAccountUser().getTableModel().setData(obj);
+            }
+            catch(IOException ex){ex.printStackTrace();}
         }
     }
     @Override public void windowClosing(WindowEvent e) {
