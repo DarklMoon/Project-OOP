@@ -184,13 +184,15 @@ public class Controller implements ActionListener, WindowListener{
         if(e.getSource().equals(mainPage.getReportButton())){mainPage.setReportPanel();}
         if(e.getSource().equals(mainPage.getAccountButton())){
             mainPage.setAccountUserPanel();
-            mainPage.getReportPanel().reset();
             try {
                 Object[][] obj = model.getUserData();
                 if(obj.length==0){mainPage.getAccountUser().setNoData();}
+                else{mainPage.getAccountUser().setVisibleNoData();}
                 mainPage.getAccountUser().getTableModel().setData(obj);
             }
             catch(IOException ex){ex.printStackTrace();}
+            
+            mainPage.getReportPanel().reset();
             mainPage.getAccountUser().getTitle().setText(model.getAccount().getUsername());
             mainPage.getAccountUser().getEmail().setText(model.getAccount().getEmail());
         }
@@ -211,6 +213,7 @@ public class Controller implements ActionListener, WindowListener{
             try {
                 Object[][] obj = model.getData("account");
                 if(obj.length==0){mainAdminPage.getAccountAdmin().setNoData();}
+                else{mainAdminPage.getAccountAdmin().setVisibleNoData();}
                 mainAdminPage.getAccountAdmin().getTableModel().setData(obj);
             }
             catch(IOException ex){ex.printStackTrace();}
@@ -396,7 +399,7 @@ public class Controller implements ActionListener, WindowListener{
             }
             catch(IOException ex){ex.printStackTrace();}
             
-            try {
+             try {
                 Object[][] obj = model.getUserData();
                 if(obj.length==0){mainPage.getAccountUser().setNoData();}
                 mainPage.getAccountUser().getTableModel().setData(obj);

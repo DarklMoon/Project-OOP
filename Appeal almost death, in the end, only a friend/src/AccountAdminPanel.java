@@ -5,8 +5,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.*;
 import java.net.URL;
 import java.awt.Color;
-import java.io.File;
-import javax.imageio.ImageIO;
 import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER;
 
 public class AccountAdminPanel extends JPanel{
@@ -22,6 +20,7 @@ public class AccountAdminPanel extends JPanel{
         tableModel = new TableModel();
         
         tablePanel = new JPanel(new BorderLayout());
+        tablePanel.setBackground(new Color(139, 188, 204));
         table = new JTable(tableModel){
              public String getToolTipText( MouseEvent e ){
                 int row = rowAtPoint( e.getPoint() );   
@@ -35,7 +34,6 @@ public class AccountAdminPanel extends JPanel{
         label.setForeground(Color.RED);
         
         table.setPreferredScrollableViewportSize(new Dimension(700, 5));
-        tablePanel.setBackground(new Color(139, 188, 204));
         table.setOpaque(true);
         table.setFillsViewportHeight(true);
         table.setBackground(COLOR);
@@ -82,6 +80,7 @@ public class AccountAdminPanel extends JPanel{
     
     public JTable getTable(){return this.table;}
     public void setNoData(){label.setSize(690,300); table.add(label);}
+    public void setVisibleNoData(){label.setVisible(false);}
     public TableModel getTableModel(){return this.tableModel;}
     
     class ButtonRenderer extends JButton implements  TableCellRenderer{
@@ -242,7 +241,6 @@ public class AccountAdminPanel extends JPanel{
         
         public Object[][] getData(){return this.data;}
         public void setData(Object[][] obj){this.data = obj;}
-
     }
     
     public JLabel getTitle(){return this.title;}

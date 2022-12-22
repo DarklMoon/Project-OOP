@@ -80,6 +80,7 @@ public class AccountUserPanel extends JPanel {
     
     public JTable getTable(){return this.table;}
     public void setNoData(){label.setSize(690,300); table.add(label);}
+    public void setVisibleNoData(){label.setVisible(false);}
     public TableModel getTableModel(){return this.tableModel;}
     
     class ButtonRenderer extends JButton implements  TableCellRenderer{
@@ -136,7 +137,7 @@ public class AccountUserPanel extends JPanel {
             
             clicked=false;
             clickedDetail=false;
-            return null;
+            return new String() ;
         }
 
         @Override
@@ -229,16 +230,14 @@ public class AccountUserPanel extends JPanel {
         public Class getColumnClass(int c) {return getValueAt(0, c).getClass();}
 
         public boolean isCellEditable(int row, int col) {
-            if ((col < 4) || (col == 5)){
-                return false;
-            } else {
-                return true;
-            }
+            if ((col < 4) || (col == 5)){return false;} 
+            else {return true;}
         }
         
         public Object[][] getData(){return this.data;}
         public void setData(Object[][] obj){this.data = obj;}
     }
+    
     public JLabel getTitle(){return this.title;}
     public JLabel getEmail(){return this.emailLabel;}
 }

@@ -89,12 +89,12 @@ public class MainPageUser {
         frame.revalidate();
     }
     
-        public void setAccountUserPanel(){
+    public void setAccountUserPanel(){
         frame.add(accountUser, BorderLayout.CENTER);
+        accountUser.setVisible(true);
         settingsPanel.setVisible(false);
         chartsPanel.setVisible(false);
         reportPanel.setVisible(false);
-        accountUser.setVisible(true);
         frame.revalidate();
     }
     
