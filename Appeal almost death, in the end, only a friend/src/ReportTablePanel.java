@@ -86,7 +86,7 @@ public class ReportTablePanel extends JPanel{
     }
     
     public JTable getTable(){return this.table;}
-    public void setNoData(){label.setSize(970,400); table.add(label);}
+    public void setNoData(){label.setSize(970,400); table.add(label); label.setVisible(true);}
     public void setVisibleNoData(){label.setVisible(false);}
     public TableModel getTableModel(){return this.tableModel;}
     public JButton getUpdateBtn(){return this.updateBtn;}

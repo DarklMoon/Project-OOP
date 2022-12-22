@@ -164,6 +164,7 @@ public class Controller implements ActionListener, WindowListener{
                                 else{
                                     model.setAccount(new Account(firstname,lastname,username,password,email,false));
                                     model.creatAccount();
+                                    JOptionPane.showMessageDialog(regPage.getFrame(),"Account created successfully. Please login","Account created",JOptionPane.INFORMATION_MESSAGE);                                   
                                     regPage.getFrame().setVisible(false);
                                     regPage.reset();
                                     loginPage.getFrame().setVisible(true);
@@ -183,12 +184,12 @@ public class Controller implements ActionListener, WindowListener{
         if(e.getSource().equals(mainPage.getIconButton())){mainPage.setMainPanel(); mainPage.getReportPanel().reset();}
         if(e.getSource().equals(mainPage.getReportButton())){mainPage.setReportPanel();}
         if(e.getSource().equals(mainPage.getAccountButton())){
-            mainPage.setAccountUserPanel();
             try {
                 Object[][] obj = model.getUserData();
                 if(obj.length==0){mainPage.getAccountUser().setNoData();}
                 else{mainPage.getAccountUser().setVisibleNoData();}
                 mainPage.getAccountUser().getTableModel().setData(obj);
+                mainPage.setAccountUserPanel();
             }
             catch(IOException ex){ex.printStackTrace();}
             
@@ -200,23 +201,24 @@ public class Controller implements ActionListener, WindowListener{
         
         if(e.getSource().equals(mainAdminPage.getIconButton())){mainAdminPage.setMainPanel();}
         if(e.getSource().equals(mainAdminPage.getReportButton())){
-            mainAdminPage.setReportTablePanel();
             try {
                 Object[][] obj = model.getData("report");
                 if(obj.length==0){mainAdminPage.getReportTable().setNoData();}
+                else{mainAdminPage.getReportTable().setVisibleNoData();}
                 mainAdminPage.getReportTable().getTableModel().setData(obj);
+                mainAdminPage.setReportTablePanel();
             }
-            catch(IOException ex){ex.printStackTrace();}
+            catch(IOException ex){ex.printStackTrace();}     
         }
         if(e.getSource().equals(mainAdminPage.getAccountButton())){
-            mainAdminPage.setAccountAdminPanel();
-            try {
+            try {     
                 Object[][] obj = model.getData("account");
                 if(obj.length==0){mainAdminPage.getAccountAdmin().setNoData();}
                 else{mainAdminPage.getAccountAdmin().setVisibleNoData();}
                 mainAdminPage.getAccountAdmin().getTableModel().setData(obj);
             }
             catch(IOException ex){ex.printStackTrace();}
+            mainAdminPage.setAccountAdminPanel();
             mainAdminPage.getAccountAdmin().getTitle().setText(model.getAccount().getUsername());
             mainAdminPage.getAccountAdmin().getEmail().setText(model.getAccount().getEmail());
         }
@@ -365,6 +367,7 @@ public class Controller implements ActionListener, WindowListener{
                 try {
                     Object[][] obj = model.getData("report");
                     if(obj.length==0){mainAdminPage.getReportTable().setNoData();}
+                    else{mainAdminPage.getReportTable().setVisibleNoData();}
                     mainAdminPage.getReportTable().getTableModel().setData(obj);
                 }
                 catch(IOException ex){ex.printStackTrace();}

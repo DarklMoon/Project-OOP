@@ -43,7 +43,6 @@ public class AccountAdminPanel extends JPanel{
         initColumn(table, table.getColumnModel().getColumn(7));
         table.getColumnModel().getColumn(6).setCellRenderer(new AccountAdminPanel.ButtonRenderer());
         table.getColumnModel().getColumn(6).setCellEditor(new AccountAdminPanel.ButtonEditor(new JTextField()));
-        table.setAutoCreateRowSorter(true);
         
         scrollPane = new JScrollPane(table,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.getViewport().setBackground(COLOR);

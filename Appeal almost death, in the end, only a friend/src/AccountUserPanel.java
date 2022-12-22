@@ -43,7 +43,6 @@ public class AccountUserPanel extends JPanel {
         initColumn(table, table.getColumnModel().getColumn(5));
         table.getColumnModel().getColumn(4).setCellRenderer(new AccountUserPanel.ButtonRenderer());
         table.getColumnModel().getColumn(4).setCellEditor(new AccountUserPanel.ButtonEditor(new JTextField()));
-        table.setAutoCreateRowSorter(true);
         
         scrollPane = new JScrollPane(table,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.getViewport().setBackground(COLOR);
@@ -79,7 +78,7 @@ public class AccountUserPanel extends JPanel {
     }
     
     public JTable getTable(){return this.table;}
-    public void setNoData(){label.setSize(690,300); table.add(label);}
+    public void setNoData(){label.setSize(680,350); table.add(label); label.setVisible(true);}
     public void setVisibleNoData(){label.setVisible(false);}
     public TableModel getTableModel(){return this.tableModel;}
     
@@ -215,7 +214,7 @@ public class AccountUserPanel extends JPanel {
     }
    
     class TableModel extends AbstractTableModel {
-        private String[] columnNames = {"No.",
+        private String[] columnNames = {"ID",
                                         "TYPE",
                                         "DATE",
                                         "LOCATION",
