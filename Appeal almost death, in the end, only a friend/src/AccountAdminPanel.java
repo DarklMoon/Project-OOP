@@ -164,7 +164,9 @@ public class AccountAdminPanel extends JPanel{
             detailPanel = new JPanel();
             
             locationLabel.setFont(new Font("Verdana", Font.BOLD, 20));
+            locationLabel.setForeground(Color.WHITE);
             detailLabel.setFont(new Font("Verdana", Font.BOLD, 20));
+            detailLabel.setForeground(Color.WHITE);
             locationArea.setFont(new Font("Verdana", Font.PLAIN, 14));
             detailArea.setFont(new Font("Verdana", Font.PLAIN, 14));
             locationArea.setEditable(false);
@@ -173,6 +175,8 @@ public class AccountAdminPanel extends JPanel{
             detailArea.setLineWrap(true);
             locationPanel.setLayout(new BorderLayout());
             detailPanel.setLayout(new BorderLayout());
+            locationPanel.setBackground(new Color(31,37,50));
+            detailPanel.setBackground(new Color(31,37,50));
             
             locationScrollPane = new JScrollPane(locationArea);
             locationScrollPane.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);

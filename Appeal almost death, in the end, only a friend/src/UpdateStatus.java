@@ -1,5 +1,7 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -25,6 +27,7 @@ public class UpdateStatus {
         idPanel.add(idLabel); 
         idPanel.add(idTf);
         idPanel.setBorder(new EmptyBorder(30,0,0,0));
+        idPanel.setBackground(new Color(139, 188, 204));
         
         statusPanel = new JPanel();
         statusPanel.setLayout(new FlowLayout());
@@ -37,6 +40,7 @@ public class UpdateStatus {
         statusPanel.add(statusLabel);
         statusPanel.add(comboBox);
         statusPanel.setBorder(new EmptyBorder(10,0,0,0));
+        statusPanel.setBackground(new Color(139, 188, 204));
         
         updatePanel.add(idPanel); 
         updatePanel.add(statusPanel);
@@ -44,8 +48,13 @@ public class UpdateStatus {
         btnPanel = new JPanel();
         btnPanel.setLayout(new FlowLayout());
         confirmBtn = new JButton("Confirm");
+        confirmBtn.setFont(new Font("Sarabun", Font.BOLD, 13));
+        confirmBtn.setForeground(Color.WHITE);
+        confirmBtn.setBackground(new Color(92, 46, 126));
         btnPanel.add(confirmBtn);
-
+        btnPanel.setBackground(new Color(76, 103, 147));
+        
+        
         frame.add(updatePanel,BorderLayout.CENTER);
         frame.add(btnPanel, BorderLayout.SOUTH);
         frame.setSize(225,200);

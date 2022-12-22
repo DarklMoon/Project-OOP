@@ -159,9 +159,13 @@ public class AccountUserPanel extends JPanel {
             detailArea = new JTextArea(detail,10,30);
             locationPanel = new JPanel();
             detailPanel = new JPanel();
+            locationPanel.setBackground(new Color(31,37,50));
+            detailPanel.setBackground(new Color(31,37,50));
             
-            locationLabel.setFont(new Font("Sarabun", Font.BOLD, 20));
-            detailLabel.setFont(new Font("Sarabun", Font.BOLD, 20));
+            locationLabel.setFont(new Font("Verdana", Font.BOLD, 20));
+            locationLabel.setForeground(Color.WHITE);
+            detailLabel.setFont(new Font("Verdana", Font.BOLD, 20));
+            detailLabel.setForeground(Color.WHITE);
             locationArea.setFont(new Font("Sarabun", Font.PLAIN, 14));
             detailArea.setFont(new Font("Sarabun", Font.PLAIN, 14));
             locationArea.setEditable(false);

@@ -29,17 +29,13 @@ public class ChartsPanel extends JPanel{
 
         p = (CategoryPlot)chart.getPlot();
         p.setBackgroundPaint(SystemColor.inactiveCaption);
-        
-        ((BarRenderer)p.getRenderer()).setBarPainter(new StandardBarPainter());
 
         BarRenderer r = (BarRenderer)chart.getCategoryPlot().getRenderer();
         r.setSeriesPaint(0, COLOR);
 
-        CategoryPlot plot = (CategoryPlot) chart.getPlot();
-        plot= chart.getCategoryPlot();
-        plot.setNoDataMessage("NO DATA");
-        plot.setNoDataMessageFont(new Font("Sarabun", Font.BOLD, 30));
-        plot.setNoDataMessagePaint(Color.RED);
+        p.setNoDataMessage("NO DATA");
+        p.setNoDataMessageFont(new Font("Sarabun", Font.BOLD, 30));
+        p.setNoDataMessagePaint(Color.RED);
         ChartPanel cp = new ChartPanel(chart);
         this.setLayout(new java.awt.BorderLayout());
         this.setBorder(new EmptyBorder(20,0,0,0));

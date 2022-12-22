@@ -58,7 +58,7 @@ public class MainAdminPage {
         frame.add(menuPanel, BorderLayout.NORTH);
         frame.add(chartAdminPanel, BorderLayout.CENTER);
         
-        frame.setVisible(false); //set true for display
+        frame.setVisible(false);
         frame.setSize(1024,640);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
